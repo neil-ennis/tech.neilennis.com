@@ -1,0 +1,667 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>General &#8211; Technical Musings</title>
+	<atom:link href="/topics/general/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>The tech blog of Neil Ennis</description>
+	<lastBuildDate>Thu, 20 Jun 2024 03:27:15 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=6.9.10</generator>
+	<item>
+		<title>Home Assistant Automations</title>
+		<link>/home-assistant-automations/</link>
+					<comments>/home-assistant-automations/#comments</comments>
+		
+		<dc:creator><![CDATA[Neil.B.Ennis]]></dc:creator>
+		<pubDate>Thu, 20 Jun 2024 03:20:22 +0000</pubDate>
+				<category><![CDATA[General]]></category>
+		<guid isPermaLink="false">/?p=559</guid>
+
+					<description><![CDATA[I use Home Assistant to control various smart devices around our home, including our Tesla Powerwall. We are charged wholesale&#8230; ]]></description>
+										<content:encoded><![CDATA[
+<p>I use <a href="https://www.home-assistant.io/" data-type="link" data-id="https://www.home-assistant.io/">Home Assistant</a> to control various smart devices around our home, including our Tesla Powerwall.</p>
+
+
+
+<p>We are charged wholesale power prices by our electricity retailer <a href="https://amber.com.au" data-type="link" data-id="https://amber.com.au">Amber Electric</a>, which means that sometimes the price of our power is really low, and sometimes it is really high.  I can therefore use my battery to charge from the grid when the price is low, and sell back to the grid with the price is high.</p>
+
+
+
+<p>Amber has a product called &#8220;<a href="https://www.amber.com.au/solar-and-battery" data-type="link" data-id="https://www.amber.com.au/solar-and-battery">Smart Shift</a>&#8221; which can control when my battery buys and sells.  It works reasonably well, but sometimes I prefer to control the battery myself, and have set up some automations to do this.</p>
+
+
+
+<figure class="wp-block-image size-large"><img fetchpriority="high" decoding="async" width="1024" height="554" src="/wp-content/uploads/2024/06/BuySellPanel-1024x554.png" alt="" class="wp-image-560" srcset="/wp-content/uploads/2024/06/BuySellPanel-1024x554.png 1024w, /wp-content/uploads/2024/06/BuySellPanel-300x162.png 300w, /wp-content/uploads/2024/06/BuySellPanel-768x416.png 768w, /wp-content/uploads/2024/06/BuySellPanel.png 1321w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<p>The end result is a simple panel when lets me set the Buy and Sell price, and how I&#8217;d like the battery to operate:</p>
+
+
+
+<ul class="wp-block-list">
+<li>How low will I let it discharge?</li>
+
+
+
+<li>How high will I let it charge?</li>
+
+
+
+<li>How full must the battery be before I sell power?</li>
+
+
+
+<li>How low should the battery charge drop before I stop selling power?</li>
+</ul>
+
+
+
+<p>These things are defined in Home Assistant as Helpers.  They&#8217;re basically variables that you can set.</p>
+
+
+
+<p>I have three scripts which control the battery.  They define standard actions which I&#8217;d like to run at different times:</p>
+
+
+
+<figure class="wp-block-image size-large"><img decoding="async" width="1024" height="537" src="/wp-content/uploads/2024/06/Script-Operation-Mode-Self-Consumption-1024x537.png" alt="" class="wp-image-561" srcset="/wp-content/uploads/2024/06/Script-Operation-Mode-Self-Consumption-1024x537.png 1024w, /wp-content/uploads/2024/06/Script-Operation-Mode-Self-Consumption-300x157.png 300w, /wp-content/uploads/2024/06/Script-Operation-Mode-Self-Consumption-768x403.png 768w, /wp-content/uploads/2024/06/Script-Operation-Mode-Self-Consumption.png 1218w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<p>&#8220;Self Consumption&#8221; tells the battery to supply power to the house.  When I don&#8217;t want to buy or sell or use grid power.</p>
+
+
+
+<figure class="wp-block-image size-large"><img decoding="async" width="1024" height="542" src="/wp-content/uploads/2024/06/Script-Operation-Mode-Fast-Charge-1024x542.png" alt="" class="wp-image-562" srcset="/wp-content/uploads/2024/06/Script-Operation-Mode-Fast-Charge-1024x542.png 1024w, /wp-content/uploads/2024/06/Script-Operation-Mode-Fast-Charge-300x159.png 300w, /wp-content/uploads/2024/06/Script-Operation-Mode-Fast-Charge-768x407.png 768w, /wp-content/uploads/2024/06/Script-Operation-Mode-Fast-Charge.png 1184w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<p>&#8220;Fast Charge&#8221; tells the battery to charge up from the grid &#8211; usually when the power price is cheap.</p>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="557" src="/wp-content/uploads/2024/06/Script-Operation-Mode-Autonomous-1024x557.png" alt="" class="wp-image-563" srcset="/wp-content/uploads/2024/06/Script-Operation-Mode-Autonomous-1024x557.png 1024w, /wp-content/uploads/2024/06/Script-Operation-Mode-Autonomous-300x163.png 300w, /wp-content/uploads/2024/06/Script-Operation-Mode-Autonomous-768x418.png 768w, /wp-content/uploads/2024/06/Script-Operation-Mode-Autonomous.png 1199w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<p>&#8220;Autonomous&#8221; tells the battery to look at the &#8220;Utility Rate Plan&#8221; in the Tesla settings, and decide whether or not to sell power.</p>
+
+
+
+<figure class="wp-block-gallery has-nested-images columns-default is-cropped wp-block-gallery-1 is-layout-flex wp-block-gallery-is-layout-flex">
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="461" height="1024" data-id="565" src="/wp-content/uploads/2024/06/Powerwall-Utility-Rate-Plan-461x1024.png" alt="" class="wp-image-565" srcset="/wp-content/uploads/2024/06/Powerwall-Utility-Rate-Plan-461x1024.png 461w, /wp-content/uploads/2024/06/Powerwall-Utility-Rate-Plan-135x300.png 135w, /wp-content/uploads/2024/06/Powerwall-Utility-Rate-Plan-768x1707.png 768w, /wp-content/uploads/2024/06/Powerwall-Utility-Rate-Plan-691x1536.png 691w, /wp-content/uploads/2024/06/Powerwall-Utility-Rate-Plan-922x2048.png 922w, /wp-content/uploads/2024/06/Powerwall-Utility-Rate-Plan.png 1080w" sizes="auto, (max-width: 461px) 100vw, 461px" /></figure>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="461" height="1024" data-id="564" src="/wp-content/uploads/2024/06/Powerwall-Utility-Rate-Prices-461x1024.png" alt="" class="wp-image-564" srcset="/wp-content/uploads/2024/06/Powerwall-Utility-Rate-Prices-461x1024.png 461w, /wp-content/uploads/2024/06/Powerwall-Utility-Rate-Prices-135x300.png 135w, /wp-content/uploads/2024/06/Powerwall-Utility-Rate-Prices-768x1707.png 768w, /wp-content/uploads/2024/06/Powerwall-Utility-Rate-Prices-691x1536.png 691w, /wp-content/uploads/2024/06/Powerwall-Utility-Rate-Prices-922x2048.png 922w, /wp-content/uploads/2024/06/Powerwall-Utility-Rate-Prices.png 1080w" sizes="auto, (max-width: 461px) 100vw, 461px" /></figure>
+</figure>
+
+
+
+<p>The prices are artificial. I enter them via the Powerwall App. Basically they tell the Powerwall that power prices are expensive between 6:00am and 8:30am, and between 4:00pm and 9:00pm. Therefore if the battery ever switches to &#8220;Autonomous Mode&#8221; at these times, it will try to sell power. At other times, it will do nothing.</p>
+
+
+
+<p>Based on this information I have set up four more scripts:</p>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="935" src="/wp-content/uploads/2024/06/Automation-Battery-Mode-Buy-1024x935.png" alt="" class="wp-image-566" srcset="/wp-content/uploads/2024/06/Automation-Battery-Mode-Buy-1024x935.png 1024w, /wp-content/uploads/2024/06/Automation-Battery-Mode-Buy-300x274.png 300w, /wp-content/uploads/2024/06/Automation-Battery-Mode-Buy-768x701.png 768w, /wp-content/uploads/2024/06/Automation-Battery-Mode-Buy.png 1235w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<p>&#8220;Battery Mode Buy&#8221; does this:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Change the Battery Mode helper to display &#8220;Buy&#8221;.</li>
+
+
+
+<li>Send me a message via MQTT</li>
+
+
+
+<li>Change the battery reserve to its maximum (usually 100%)</li>
+
+
+
+<li>Run the &#8220;Fast Charge&#8221; script.</li>
+</ul>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="981" src="/wp-content/uploads/2024/06/Automation-Battery-Mode-Consume-1024x981.png" alt="" class="wp-image-567" srcset="/wp-content/uploads/2024/06/Automation-Battery-Mode-Consume-1024x981.png 1024w, /wp-content/uploads/2024/06/Automation-Battery-Mode-Consume-300x287.png 300w, /wp-content/uploads/2024/06/Automation-Battery-Mode-Consume-768x736.png 768w, /wp-content/uploads/2024/06/Automation-Battery-Mode-Consume.png 1173w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<p>&#8220;Battery Mode Consume&#8221; does this:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Change the Battery Mode helper to display &#8220;Consume&#8221;.</li>
+
+
+
+<li>Send me a message via MQTT</li>
+
+
+
+<li>Change the battery reserve to its minimum (usually 15%)</li>
+
+
+
+<li>Run the &#8220;Self Consumption&#8221; script.</li>
+</ul>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="984" src="/wp-content/uploads/2024/06/Automation-Battery-Mode-Hold-1024x984.png" alt="" class="wp-image-568" srcset="/wp-content/uploads/2024/06/Automation-Battery-Mode-Hold-1024x984.png 1024w, /wp-content/uploads/2024/06/Automation-Battery-Mode-Hold-300x288.png 300w, /wp-content/uploads/2024/06/Automation-Battery-Mode-Hold-768x738.png 768w, /wp-content/uploads/2024/06/Automation-Battery-Mode-Hold.png 1190w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<p>&#8220;Battery Mode Hold&#8221; does this:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Change the Battery Mode helper to display &#8220;Hold&#8221;.</li>
+
+
+
+<li>Send me a message via MQTT</li>
+
+
+
+<li>Change the battery reserve to its current charge level.  This forces the battery to stay at this level, neither importing nor exporting.</li>
+
+
+
+<li>Run the &#8220;Self Consumption&#8221; script.</li>
+</ul>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="857" src="/wp-content/uploads/2024/06/Automation-Battery-Mode-Sell-1024x857.png" alt="" class="wp-image-569" srcset="/wp-content/uploads/2024/06/Automation-Battery-Mode-Sell-1024x857.png 1024w, /wp-content/uploads/2024/06/Automation-Battery-Mode-Sell-300x251.png 300w, /wp-content/uploads/2024/06/Automation-Battery-Mode-Sell-768x642.png 768w, /wp-content/uploads/2024/06/Automation-Battery-Mode-Sell.png 1205w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<p>&#8220;Battery Mode Sell&#8221; does this:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Change the Battery Mode helper to display &#8220;Sell&#8221;.</li>
+
+
+
+<li>Send me a message via MQTT</li>
+
+
+
+<li>Run the &#8220;Autonomous&#8221; script.</li>
+</ul>
+
+
+
+<p>Now for the automations:</p>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="691" src="/wp-content/uploads/2024/06/image-1024x691.png" alt="" class="wp-image-571" srcset="/wp-content/uploads/2024/06/image-1024x691.png 1024w, /wp-content/uploads/2024/06/image-300x203.png 300w, /wp-content/uploads/2024/06/image-768x519.png 768w, /wp-content/uploads/2024/06/image.png 1219w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<p>The &#8220;Charge Battery&#8221; automation is triggered by one of two events:</p>
+
+
+
+<ol class="wp-block-list">
+<li>If the general power price (from the Amber API) is less than my specified &#8220;Buy Price&#8221;, or</li>
+
+
+
+<li>The general power price (from the Amber API) is negative (some days they pay us to consume power)</li>
+</ol>
+
+
+
+<p>There is also a precondition, which must be true: The &#8220;Demand Tariff&#8221; must not be active. We get charged additional fees for any consumption during the demand period, so I try to avoid consumption at that time.</p>
+
+
+
+<p>&#8220;Demand Tariff Active&#8221; is a binary sensor helper:</p>
+
+
+
+<figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="594" height="871" src="/wp-content/uploads/2024/06/image-1.png" alt="" class="wp-image-572" srcset="/wp-content/uploads/2024/06/image-1.png 594w, /wp-content/uploads/2024/06/image-1-205x300.png 205w" sizes="auto, (max-width: 594px) 100vw, 594px" /></figure>
+
+
+
+<figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="521" height="420" src="/wp-content/uploads/2024/06/image-2.png" alt="" class="wp-image-573" srcset="/wp-content/uploads/2024/06/image-2.png 521w, /wp-content/uploads/2024/06/image-2-300x242.png 300w" sizes="auto, (max-width: 521px) 100vw, 521px" /></figure>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="939" src="/wp-content/uploads/2024/06/image-4-1024x939.png" alt="" class="wp-image-575" srcset="/wp-content/uploads/2024/06/image-4-1024x939.png 1024w, /wp-content/uploads/2024/06/image-4-300x275.png 300w, /wp-content/uploads/2024/06/image-4-768x704.png 768w, /wp-content/uploads/2024/06/image-4.png 1185w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<p>The &#8220;Consume Battery&#8221; Automation is triggered by one of three events:</p>
+
+
+
+<ol class="wp-block-list">
+<li>The Power Price exceeds the &#8220;Buy Price&#8221;</li>
+
+
+
+<li>The &#8220;Demand Tariff&#8221; changes from OFF to ON</li>
+
+
+
+<li>The Power Price exceeds the &#8220;Max Hold Price&#8221;</li>
+</ol>
+
+
+
+<p>&#8220;Max Hold Price&#8221; is a binary sensor variable I set up in &#8220;sensor.yaml&#8221;:</p>
+
+
+
+<figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="645" height="202" src="/wp-content/uploads/2024/06/image-5.png" alt="" class="wp-image-576" srcset="/wp-content/uploads/2024/06/image-5.png 645w, /wp-content/uploads/2024/06/image-5-300x94.png 300w" sizes="auto, (max-width: 645px) 100vw, 645px" /></figure>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="940" src="/wp-content/uploads/2024/06/image-7-1024x940.png" alt="" class="wp-image-579" srcset="/wp-content/uploads/2024/06/image-7-1024x940.png 1024w, /wp-content/uploads/2024/06/image-7-300x275.png 300w, /wp-content/uploads/2024/06/image-7-768x705.png 768w, /wp-content/uploads/2024/06/image-7.png 1437w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<p>The &#8220;Dispatch Begin&#8221; (Start Selling) automation is triggered whenever the Feed In Tariff is higher than my minimum sell price.</p>
+
+
+
+<p>It will only run if the battery level is above the minimum &#8220;sell&#8221; charge level, which I have currently set to 60%.  </p>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="545" src="/wp-content/uploads/2024/06/image-8-1024x545.png" alt="" class="wp-image-580" srcset="/wp-content/uploads/2024/06/image-8-1024x545.png 1024w, /wp-content/uploads/2024/06/image-8-300x160.png 300w, /wp-content/uploads/2024/06/image-8-768x408.png 768w, /wp-content/uploads/2024/06/image-8.png 1476w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<p>The &#8220;Dispatch End&#8221; (Stop Selling) automation is triggered by one of two events:</p>
+
+
+
+<ol class="wp-block-list">
+<li>The &#8220;Feed In Price&#8221; falls below my &#8220;Sell Price&#8221;, or</li>
+
+
+
+<li>The Battery Charge Level falls below my minimum charge percentage (currently 40%).</li>
+</ol>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="758" src="/wp-content/uploads/2024/06/image-9-1024x758.png" alt="" class="wp-image-581" srcset="/wp-content/uploads/2024/06/image-9-1024x758.png 1024w, /wp-content/uploads/2024/06/image-9-300x222.png 300w, /wp-content/uploads/2024/06/image-9-768x568.png 768w, /wp-content/uploads/2024/06/image-9.png 1454w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<p>The &#8220;Preserve Battery&#8221; Automation is triggered whenever the power price falls below the maximum hold price.</p>
+
+
+
+<p>The power price must be above my &#8220;Buy&#8221; price (otherwise I&#8217;d be buying, not preserving), and the Demand Tariff must be off.</p>
+
+
+
+<p>All of these automations rely on the &#8220;<a href="https://teslemetry.com/" data-type="link" data-id="https://teslemetry.com/">Teslemetry</a>&#8221; integration which gives me greater control over my battery than the standard Tesla integration.  It&#8217;s a paid service, but it&#8217;s cheap, and it always works.</p>
+
+
+
+<p>If you need me to clarify anything, please leave a comment.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>/home-assistant-automations/feed/</wfw:commentRss>
+			<slash:comments>3</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>Enhancements to DIY iGoogle start page</title>
+		<link>/enhancements-to-diy-igoogle-start-page/</link>
+					<comments>/enhancements-to-diy-igoogle-start-page/#respond</comments>
+		
+		<dc:creator><![CDATA[Neil.B.Ennis]]></dc:creator>
+		<pubDate>Thu, 29 Jan 2015 22:43:38 +0000</pubDate>
+				<category><![CDATA[General]]></category>
+		<guid isPermaLink="false">/?p=440</guid>
+
+					<description><![CDATA[I’ve upgraded the DIY “iGoogle” start page. You can see the latest version here: http://nbe.me/demo The previous version is here:&#8230; ]]></description>
+										<content:encoded><![CDATA[<p>I’ve upgraded the DIY “iGoogle” start page.</p>
+<p>You can see the latest version here: <a href="http://nbe.me/demo" target="_blank">http://nbe.me/demo</a><br />
+The previous version is here: <a href="http://nbe.me/olddemov2" target="_blank">http://nbe.me/olddemov2</a><br />
+The previous previous version is here: <a href="http://nbe.me/olddemo" target="_blank">http://nbe.me/olddemo</a><br />
+You can download the source for the page here: <a href="http://nbe.me/demo/d.zip" target="_blank">http://nbe.me/demo/d.zip</a></p>
+<p>The major enhancement is that you can now embed html into the page &#8211; which makes it easy to add Youtube videos, or iFrame widgets.</p>
+<p><a href="/index.php/enhancements-to-diy-igoogle-start-page/setupscreen/" rel="attachment wp-att-441"><img loading="lazy" decoding="async" src="/wp-content/uploads/2015/01/SetupScreen.jpg" alt="Setup Screen" width="628" height="529" class="alignnone size-full wp-image-441" srcset="/wp-content/uploads/2015/01/SetupScreen.jpg 628w, /wp-content/uploads/2015/01/SetupScreen-300x253.jpg 300w, /wp-content/uploads/2015/01/SetupScreen-150x126.jpg 150w, /wp-content/uploads/2015/01/SetupScreen-400x337.jpg 400w" sizes="auto, (max-width: 628px) 100vw, 628px" /></a></p>
+<p>To add embed code, click on Setup and add a new widget with a type of &#8220;html&#8221;. In the &#8220;data uri&#8221; field, paste your embed code. For example, to add a youtube video, you&#8217;d paste this code into the &#8220;data uri&#8221; field:</p>
+<p><code>&lt;iframe width="320" height=auto src="https://www.youtube.com/embed/DPP1INgPtSs" frameborder="0" allowfullscreen&gt;&lt;/iframe&gt;</code></p>
+<p>Make sure you keep the width of any iframes to 320 pixels or less, otherwise the layout of the screen won&#8217;t look too good.</p>
+<p>Also &#8211; if you&#8217;re trying out the demo page, you might want to press Ctrl-F5 to clear your browser cache, so the new version gets loaded.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>/enhancements-to-diy-igoogle-start-page/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>ObSrv: No Longer For Sale</title>
+		<link>/obsrv-no-longer-for-sale/</link>
+					<comments>/obsrv-no-longer-for-sale/#respond</comments>
+		
+		<dc:creator><![CDATA[Neil.B.Ennis]]></dc:creator>
+		<pubDate>Mon, 24 Feb 2014 00:29:29 +0000</pubDate>
+				<category><![CDATA[General]]></category>
+		<category><![CDATA[ObSrv]]></category>
+		<guid isPermaLink="false">/?p=433</guid>
+
+					<description><![CDATA[Thank you for the emails of support and kind donations. After a few minor changes and exchanges with Google I&#8230; ]]></description>
+										<content:encoded><![CDATA[<p>Thank you for the emails of support and kind donations.</p>
+<p>After a few minor changes and exchanges with Google I have managed to rectify the problem relating to inappropriate images on the detail pages.</p>
+<p>Because of your kind support, and the resolution of issues with Google, I&#8217;ve changed my mind and decided not to sell ObSrv.</p>
+<p>I plan to keep it running indefinitely.</p>
+<p>If you have any issues, or need support, please leave a message or contact me at:<br />
+mail at neilennis dot com</p>
+<p>If you&#8217;d like to donate to help keep the site running, I&#8217;ve added a couple of paypal buttons on the site.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>/obsrv-no-longer-for-sale/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>DNS323 Formatting &#8220;stuck&#8221; at 94%</title>
+		<link>/dns323-formatting-stuck-at-94/</link>
+					<comments>/dns323-formatting-stuck-at-94/#respond</comments>
+		
+		<dc:creator><![CDATA[Neil.B.Ennis]]></dc:creator>
+		<pubDate>Thu, 05 Dec 2013 08:19:45 +0000</pubDate>
+				<category><![CDATA[General]]></category>
+		<category><![CDATA[Harrdware]]></category>
+		<guid isPermaLink="false">/?p=415</guid>
+
+					<description><![CDATA[The DLINK DNS323 is a network storage device that takes two SATA disk drives,  plugs into your local network, and&#8230; ]]></description>
+										<content:encoded><![CDATA[<p><a href="/index.php/dns323-formatting-stuck-at-94/dns-323_side/" rel="attachment wp-att-418"><img loading="lazy" decoding="async" class="alignleft size-full wp-image-418" alt="DNS-323_side" src="/wp-content/uploads/2013/12/DNS-323_side.png" width="380" height="290" srcset="/wp-content/uploads/2013/12/DNS-323_side.png 380w, /wp-content/uploads/2013/12/DNS-323_side-300x228.png 300w, /wp-content/uploads/2013/12/DNS-323_side-150x114.png 150w" sizes="auto, (max-width: 380px) 100vw, 380px" /></a>The <a href="http://www.dlink.com.au/products/?pid=666" target="_blank">DLINK DNS323</a> is a network storage device that takes two SATA disk drives,  plugs into your local network, and acts as a file server for media and documents.</p>
+<p>We&#8217;ve had one for the last 5 years, and it has served us very well.  It&#8217;s quick, reliable and easy to use.</p>
+<p>We had two 1TB Western Digital &#8220;Caviar&#8221; drives installed.</p>
+<p>Unfortunately, one of those drives failed last night.  I replaced it with a Seagate &#8220;Baracuda&#8221; 2TB drive.  We&#8217;re not running the DNS323 in a &#8220;RAID&#8221; configuration, so a different type of drive isn&#8217;t a problem.</p>
+<p>When I booted up the unit with the new drive, the web interface told me it found the new drive, and was it ok to format it?  It assured me my other drive would be ok.</p>
+<p>I answered &#8220;Yes&#8221; and it started formatting the new drive, but it stopped when it got to 94%.</p>
+<p>There are a whole lot of articles online about this problem, and people have come up with many and various issues to get around it like using a different browser, clearing out cookes, even formatting the drive on a separate machine.</p>
+<p><span style="text-decoration: underline;"><strong>There was a mcuh simpler solution, however.</strong></span></p>
+<p>A 2TB drive is pretty big.  It takes a long time to format.  It just so happens that on this device, most of the formatting happens when it gets to the 94% mark.</p>
+<p><span style="text-decoration: underline;"><strong>So the easiest solution to this problem is to WAIT. </strong> </span></p>
+<p>Do nothing for an hour.  Eventually it will finish formatting, and everything will be ok.</p>
+<p>If you don&#8217;t like doing this, feel free to try a different browser, or bury your computer in peat for a couple of hours, or chant incantations for a while.  I assure you whatever you do, if it takes longer than an hour, it will fix the problem.</p>
+<p>Well&#8230;. it will appear to fix the problem.</p>
+<p>Or &#8211; just wait.  Let the thing finish formatting.  Then everything will be ok.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>/dns323-formatting-stuck-at-94/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>DIY iGoogle Upgrade</title>
+		<link>/diy-igoogle-upgrade/</link>
+					<comments>/diy-igoogle-upgrade/#comments</comments>
+		
+		<dc:creator><![CDATA[Neil.B.Ennis]]></dc:creator>
+		<pubDate>Thu, 14 Nov 2013 03:16:32 +0000</pubDate>
+				<category><![CDATA[General]]></category>
+		<category><![CDATA[Software]]></category>
+		<guid isPermaLink="false">/?p=399</guid>
+
+					<description><![CDATA[I&#8217;ve upgraded the DIY &#8220;iGoogle&#8221; start page. You can see the latest version here: http://nbe.me/demo The previous version is here:&#8230; ]]></description>
+										<content:encoded><![CDATA[<p>I&#8217;ve upgraded the DIY &#8220;iGoogle&#8221; start page.</p>
+<p>You can see the latest version here: <a href="http://nbe.me/demo" target="_blank">http://nbe.me/demo</a><br />
+The previous version is here: <a href="http://nbe.me/olddemov2" target="_blank">http://nbe.me/olddemov2</a><br />
+The previous previous version is here: <a href="http://nbe.me/olddemo" target="_blank">http://nbe.me/olddemo</a><br />
+You can download the source for the page here: <a href="http://nbe.me/demo/d.zip" target="_blank">http://nbe.me/demo/d.zip</a></p>
+<p>Major items:<br />
+1. Each widget has its own &#8220;Settings&#8221; page which allows you to edit settings. Just click on the &#8220;settings&#8221; button at the top right of any widget:<br />
+<a href="/index.php/diy-igoogle-upgrade/widget-settings-button/" rel="attachment wp-att-400"><img loading="lazy" decoding="async" class="size-medium wp-image-400 alignnone" alt="Widget Settings Button" src="/wp-content/uploads/2013/11/Widget-Settings-Button-300x280.jpg" width="300" height="280" srcset="/wp-content/uploads/2013/11/Widget-Settings-Button-300x280.jpg 300w, /wp-content/uploads/2013/11/Widget-Settings-Button-150x140.jpg 150w, /wp-content/uploads/2013/11/Widget-Settings-Button.jpg 372w" sizes="auto, (max-width: 300px) 100vw, 300px" /></a></p>
+<p>2. You can add / edit stocks &amp; shares. If you click on the settings button for the stock widget you get a screen which lets you change the existing stock codes, quantities and buy prices.:<br />
+<a href="/index.php/diy-igoogle-upgrade/stock-edit-screen/" rel="attachment wp-att-401"><img loading="lazy" decoding="async" class="size-medium wp-image-401 alignnone" alt="Stock Edit Screen" src="/wp-content/uploads/2013/11/Stock-Edit-Screen-300x284.jpg" width="300" height="284" srcset="/wp-content/uploads/2013/11/Stock-Edit-Screen-300x284.jpg 300w, /wp-content/uploads/2013/11/Stock-Edit-Screen-150x142.jpg 150w, /wp-content/uploads/2013/11/Stock-Edit-Screen.jpg 336w" sizes="auto, (max-width: 300px) 100vw, 300px" /></a><br />
+To delete a stock item, click on the red &#8220;X&#8221; button.<br />
+To move a stock item up a line, click on the blue up-arrow (↑)<br />
+To move a stock item down a line, click on the blue down-arrow (↓)<br />
+To add a stock item, fill in the blanks and click the green &#8220;+&#8221; button.<br />
+To save changes, click on the &#8220;SAVE&#8221; button.<br />
+To cancel changes or close the edit dialog, click on the [x] button at the top right of the window.</p>
+<p>3. You can edit the links in the top-bar by clicking on the &#8220;*&#8221; to the right of the links in the top bar.</p>
+<p>4. You can add / edit / remove widgets by clicking on the &#8220;Setup&#8221; link in the top bar.<br />
+<a href="/index.php/diy-igoogle-upgrade/setup/" rel="attachment wp-att-404"><img loading="lazy" decoding="async" class="size-full wp-image-404 alignnone" alt="setup" src="/wp-content/uploads/2013/11/setup.jpg" width="644" height="540" srcset="/wp-content/uploads/2013/11/setup.jpg 644w, /wp-content/uploads/2013/11/setup-300x251.jpg 300w, /wp-content/uploads/2013/11/setup-150x125.jpg 150w, /wp-content/uploads/2013/11/setup-400x335.jpg 400w" sizes="auto, (max-width: 644px) 100vw, 644px" /></a><br />
+To delete a widget, click on the red &#8220;X&#8221; button.<br />
+To move a widget up a line, click on the blue up-arrow (↑)<br />
+To move a widget down a line, click on the blue down-arrow (↓)<br />
+To add a widget, fill in the blanks and click the green &#8220;+&#8221; button.<br />
+To save changes, click on the &#8220;SAVE&#8221; button.<br />
+To cancel changes or close the edit dialog, click on the [x] button at the top right of the window.<br />
+Click &#8220;Factory Reset&#8221; to clear all your settings and revert back to the original settings that you downloaded from the website.</p>
+<p>5. All settings are stored locally on your hard drive using the HTML5 &#8220;localStorage&#8221; facility. This is like a cookie, only bigger. The page settings were over 4,000 bytes in size, so would not fit in a cookie which officially can&#8217;t be larger than about 4,000 bytes. Local storage can be as large as your hard drive, so there are no storage limits, and the security / privacy settings are the same as for cookies.</p>
+<p>You can download the source code here:<br />
+<a href="http://nbe.me/demo/d.zip" target="_blank">http://nbe.me/demo/d.zip</a></p>
+<p>If you plan to use the weather widget, please change the &#8220;Weather API Key&#8221; in the &#8220;Setup&#8221; screen. Since lots of people are using this start page, the current API key will run out of API calls each day and won&#8217;t work. There are instructions on getting your own keys here:<br />
+<a href="/index.php/diy-replacement-for-igoogle/" target="_blank">/index.php/diy-replacement-for-igoogle/</a></p>
+<p>As with all previous versions, you don&#8217;t need to load this start page on a web server. It will run fine from a folder on your computer. Just unzip the zip file, and click on index.html.</p>
+<p>If you plan to put it on a public web server, you might want to password protect it with a htaccess file to protect your privacy.</p>
+<p>Please try it out and let me know how you go.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>/diy-igoogle-upgrade/feed/</wfw:commentRss>
+			<slash:comments>2</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>DIY Replacement for iGoogle.</title>
+		<link>/diy-replacement-for-igoogle/</link>
+					<comments>/diy-replacement-for-igoogle/#respond</comments>
+		
+		<dc:creator><![CDATA[Neil.B.Ennis]]></dc:creator>
+		<pubDate>Thu, 24 Oct 2013 00:22:28 +0000</pubDate>
+				<category><![CDATA[General]]></category>
+		<category><![CDATA[Software]]></category>
+		<guid isPermaLink="false">/?p=395</guid>
+
+					<description><![CDATA[iGoogle will be gone at the end of this month. I love iGoogle. It was free, convenient, and worked well.&#8230; ]]></description>
+										<content:encoded><![CDATA[<p><a href="http://iGoogle.com" target="_blank">iGoogle</a> will be gone at the end of this month.</p>
+<p>I love iGoogle. It was free, convenient, and worked well. But because it was provided free by Google, it&#8217;s their right to pull the pin on it if they want to.</p>
+<p>This event made me realize that any free service online may be cancelled. So if you don&#8217;t want the inconvenience of losing a free service that you love, you&#8217;re best off doing it yourself.</p>
+<p><a href="http://nbe.me/demo" target="_blank">Here&#8217;s my modest attempt at writing my own iGoogle replacement page.</a></p>
+<p>You can download the source for the page here: <a href="http://nbe.me/demo/d.zip" target="_blank">http://nbe.me/demo/d.zip</a></p>
+<p>When you&#8217;ve downloaded the zip, you can unzip it to your own hard drive, or put it on a web server somewhere.</p>
+<p>Before you start using it, you need two things: A Google API Key, and a Wunderground API Key.</p>
+<h3>Google API Key</h3>
+<p>1. Go to <a href="https://code.google.com/apis/console" target="_blank">https://code.google.com/apis/console</a><br />
+2. If prompted, click on the &#8220;Create Project&#8221; button<br />
+3. Click on the &#8220;Services&#8221; button and change the status of &#8220;Custom Search API&#8221; to &#8220;ON&#8221;. Accept the terms.<br />
+4. Click on the &#8220;API Access&#8221; Link<br />
+5. In the &#8220;Simple API Access&#8221; section, click on &#8220;Create new Server key&#8230;&#8221;<br />
+Leave the &#8220;IP Address&#8221; box blank, and click &#8220;Create&#8221;<br />
+6. Copy the &#8220;API key&#8221;. This is your &#8220;Google Key&#8221; that you need to put in your index.html<br />
+7. Edit &#8220;index.html&#8221; and scroll to line 21 or there abouts. It will say something like:</p>
+<p style="padding-left: 30px;">var GoogleKey = &#8220;<span style="color: #ff0000;">XXaaAaAAaAaAA9A9a9aaaaaAAA99a9aaaaA9AAA</span>&#8220;; // Get your Google key here: https://code.google.com/apis/console</p>
+<p>8. Replace the red key with your Google API key.<br />
+9. Save the index.html file</p>
+<h3> Wunderground Key</h3>
+<p>1. Go to <a href="http://www.wunderground.com/weather/api/" target="_blank">http://www.wunderground.com/weather/api/</a><br />
+2. Click on &#8220;Sign Up for FREE&#8221;<br />
+3. Create your free account<br />
+4. Activate your membership<br />
+5. Login to Wunderground<br />
+6. Click on &#8220;Explore My Options&#8221;.<br />
+7. Select &#8220;Developer&#8221; option ($0) then click &#8220;Purchase Key&#8221;<br />
+8. Complete the questionaire honestly.<br />
+9. Click on the &#8220;Key Stettings&#8221; tab.<br />
+10. Copy the &#8220;Key ID&#8221;. This is your &#8220;Weather Key&#8221; that you need to put in your index.html<br />
+11. Edit &#8220;index.html&#8221; and scroll to line 23 or there abouts. It will say something like:</p>
+<p style="padding-left: 30px;">var WeatherKey     = &#8220;<span style="color: #ff0000;">99999999999aaaaa</span>&#8220;; // Get your API key here: http://www.wunderground.com/weather/api/</p>
+<p>12. Replace the red key with your Weather key.<br />
+13. Save the index.html file</p>
+<p>You might want to change &#8220;WeatherCountry&#8221; and &#8220;WeatherCity&#8221; to reflect your home country and city.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>/diy-replacement-for-igoogle/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>Low-res Brain</title>
+		<link>/low-res-brain/</link>
+					<comments>/low-res-brain/#respond</comments>
+		
+		<dc:creator><![CDATA[Neil.B.Ennis]]></dc:creator>
+		<pubDate>Wed, 19 Jan 2011 04:05:18 +0000</pubDate>
+				<category><![CDATA[General]]></category>
+		<guid isPermaLink="false">/?p=356</guid>
+
+					<description><![CDATA[Thought experiment. Close your eyes and imagine a clock face with hands and numbers. Imagine the clock face as a&#8230; ]]></description>
+										<content:encoded><![CDATA[<p><a href="/wp-content/uploads/2011/01/BlurryClockFace.jpg"><img loading="lazy" decoding="async" class="alignleft size-medium wp-image-357" title="Blurry Clock Face" src="/wp-content/uploads/2011/01/BlurryClockFace-287x300.jpg" alt="" width="287" height="300" srcset="/wp-content/uploads/2011/01/BlurryClockFace-287x300.jpg 287w, /wp-content/uploads/2011/01/BlurryClockFace.jpg 479w" sizes="auto, (max-width: 287px) 100vw, 287px" /></a><br />
+<strong>Thought experiment.</strong></p>
+<p>Close your eyes and imagine a clock face with hands and numbers.</p>
+<p>Imagine the clock face as a whole.  Try not to think of just parts of it.</p>
+<p>In your minds eye can you see the individual numbers on the clock face all at once?</p>
+<p>I can&#8217;t.</p>
+<p>I have to &#8220;zoom&#8221; in to each part of the clock to see all the numbers.  I can&#8217;t see them all at once.</p>
+<p>If the brain can&#8217;t do this while we&#8217;re awake, then it&#8217;s no wonder we don&#8217;t have vivid details of items when we&#8217;re asleep and dreaming.</p>
+<p>If our brains imagery has such low resolution, why do we seem to have such hi-resolution memories?</p>
+<p>Maybe it&#8217;s different for you.  But that&#8217;s how it is when I try it.</p>
+<p>This whole experience helps me understand how my brain visualizes things.  It&#8217;s not like the &#8220;Pictures&#8221; folder on my computer.  I don&#8217;t store high-resolution pictures in my head.  I think it&#8217;s more like a short-hand way of reconstructing a picture.  Without realizing it my brain says  &#8220;A clock is a circle.  And it&#8217;s got numbers around it from 1 to 12.  And it has hands.  And it ticks&#8221;.</p>
+<p>Perhaps it&#8217;s like that for someone&#8217;s face as well?  Do you know every freckle, mole or scar on your partners face?  When you think about it, how much detail of someone&#8217;s face do you actually remember?  I think perhaps we actually store a low res &#8220;caricature&#8221; of a persons face in our brain, and when we see that person, we match what we see of their face with the low res memory of it, and somehow our brain can recognize that the two things represent the same person.</p>
+<p>I think our physical perception of reality is a lot less detailed than we realize.  When we look at a page in a book, there&#8217;s only a small circle of our vision that can actually see fine detail &#8211; about the width of our thumb held at arms length.  If you hold your thumb in front of a book held at arms length, and focus on your thumb, you&#8217;ll find it almost impossible to read the book.  That&#8217;s because the <a href="http://en.wikipedia.org/wiki/Fovea_centralis">Fovea</a> (the bit that sees detail)  in your eye only occupies a small part of your Retina (the bit that actually sees things).  But our brain manipulates us to think that we can see everything in detail, because our eyes dart around, and our brain puts all the jigsaw pieces together.</p>
+<p>So next time you&#8217;re certain you saw something, remember that what you saw, what you thought you saw, and what you remember seeing are all totally different!</p>
+<p>Isn&#8217;t the brain an amazing thing?</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>/low-res-brain/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>Around Pine Rivers</title>
+		<link>/around-pine-rivers/</link>
+					<comments>/around-pine-rivers/#respond</comments>
+		
+		<dc:creator><![CDATA[Neil.B.Ennis]]></dc:creator>
+		<pubDate>Wed, 10 Feb 2010 01:58:24 +0000</pubDate>
+				<category><![CDATA[General]]></category>
+		<guid isPermaLink="false">/?p=307</guid>
+
+					<description><![CDATA[Here&#8217;s a brief description of each of the photos in the &#8220;Around Pine Rivers&#8221; theme for iGoogle. If you&#8217;ve got&#8230; ]]></description>
+										<content:encoded><![CDATA[<p>Here&#8217;s a brief description of each of the photos in the <a href="http://www.google.com/ig/directory?hl=en-GB&amp;gl=us&amp;url=neilsthemes.googlecode.com/svn/trunk/AroundLawnton/AroundPineRivers.xml&amp;type=themes">&#8220;Around Pine Rivers&#8221;</a> theme for iGoogle.</p>
+<p>If you&#8217;ve got any suggestions, corrections or improvements, please let me know.</p>
+<p>Click on the images for a larger view.</p>
+<p>[singlepic id=33 w=480] Bell&#8217;s Scrub is the only remaing parcel of virgin lowland vine rainforest in the Pine Rivers district.<br />
+See <a href="http://blog.neilennis.com/index.php/bells-scrub-lawnton/">http://blog.neilennis.com/index.php/bells-scrub-lawnton/</a></p>
+<p>[singlepic id=34 w=480] [singlepic id=35 w=480] [singlepic id=38 w=480] [singlepic id=40 w=480] Some of the stunning late afternoon views in my street.<br />
+see: <a href="http://blog.neilennis.com/index.php/everyday-beauty/">http://blog.neilennis.com/index.php/everyday-beauty/</a></p>
+<p>[singlepic id=36 w=480] Fleeting glimpses of childhood on the North Pine River.<br />
+See <a href="http://blog.neilennis.com/index.php/fleeting-glimpses-of-childhood/">http://blog.neilennis.com/index.php/fleeting-glimpses-of-childhood/</a></p>
+<p>[singlepic id=37 w=480] Christmas Beetle.<br />
+See: <a href="http://www.flickr.com/photos/magictyger/sets/72157603351606109/">http://www.flickr.com/photos/magictyger/sets/72157603351606109/</a><br />
+Wikipedia Article: <a href="http://en.wikipedia.org/wiki/Anoplognathus_pallidicollis">http://en.wikipedia.org/wiki/Anoplognathus_pallidicollis</a></p>
+<p>[singlepic id=39 w=480] Lightning in the Gum Trees.<br />
+See: <a href="http://blog.neilennis.com/index.php/lightning-in-the-gum-trees/">http://blog.neilennis.com/index.php/lightning-in-the-gum-trees/</a></p>
+<p>[singlepic id=41 w=480] Ebert Family Vineyard.<br />
+See: <a href="http://blog.neilennis.com/index.php/echoes-in-the-vineyard/">http://blog.neilennis.com/index.php/echoes-in-the-vineyard/</a></p>
+<p>[singlepic id=42 w=480] Stephen Lawn Park.<br />
+See: <a href="http://blog.neilennis.com/index.php/nuts-about-history/">http://blog.neilennis.com/index.php/nuts-about-history/</a></p>
+<p>[singlepic id=43 w=480] Lake Samsonvale.<br />
+See: <a href="http://blog.neilennis.com/index.php/lake-samsonvale-2/">http://blog.neilennis.com/index.php/lake-samsonvale-2/</a><br />
+Wikipedia article: <a href="http://en.wikipedia.org/wiki/Lake_Samsonvale">http://en.wikipedia.org/wiki/Lake_Samsonvale</a></p>
+<p>[singlepic id=44 w=480] South Pine River near the site of the old Normanby Rum Distillery.<br />
+See <a href="http://blog.neilennis.com/index.php/bikes-rivers-old-rum/">http://blog.neilennis.com/index.php/bikes-rivers-old-rum/</a></p>
+<p>[singlepic id=45 w=480] Yebri Creek.<br />
+See <a href="http://blog.neilennis.com/index.php/exploring-on-sunday/">http://blog.neilennis.com/index.php/exploring-on-sunday/</a></p>
+<p>[singlepic id=46 w=480] Sunset on the North Pine River.<br />
+See: <a href="http://blog.neilennis.com/index.php/sunset-on-the-north-pine-river/">http://blog.neilennis.com/index.php/sunset-on-the-north-pine-river/</a></p>
+<p>[singlepic id=47 w=480] Lake Kurwongbah.<br />
+See <a href="http://blog.neilennis.com/index.php/cycling-by-the-lake/">http://blog.neilennis.com/index.php/cycling-by-the-lake/</a><br />
+Here&#8217;s a wikipedia article: <a href="http://en.wikipedia.org/wiki/Lake_kurwongbah">http://en.wikipedia.org/wiki/Lake_kurwongbah</a></p>
+]]></content:encoded>
+					
+					<wfw:commentRss>/around-pine-rivers/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>Cool technology</title>
+		<link>/cool-technology/</link>
+					<comments>/cool-technology/#comments</comments>
+		
+		<dc:creator><![CDATA[Neil.B.Ennis]]></dc:creator>
+		<pubDate>Sun, 02 Aug 2009 08:37:56 +0000</pubDate>
+				<category><![CDATA[General]]></category>
+		<guid isPermaLink="false">/?p=267</guid>
+
+					<description><![CDATA[Lilly came in to my office the other day. &#8220;Dad I have to go out now. Can you get the&#8230; ]]></description>
+										<content:encoded><![CDATA[<div style="float:left; margin-right: 10px; margin-bottom: 10px;"><a title="Six and mean by MagicTyger, on Flickr" href="http://www.flickr.com/photos/magictyger/3779799683/"><img loading="lazy" decoding="async" src="http://farm3.static.flickr.com/2424/3779799683_4428aaf8fd_m.jpg" alt="Six and mean" width="180" height="240" /></a></div>
+<p>Lilly came in to my office the other day. &#8220;Dad I have to go out now. Can you get the TV to record my favourite show in an hour&#8221;.</p>
+<p>&#8220;Hmmmm????&#8221;, I replied in typical pre-occuipied father mode.</p>
+<p>But she had an intensity in her eye that made me realize I ignored this six year old at my peril, despite my displike of leaving my desk while in the middle of solving a problem.</p>
+<p>Happily, I didn&#8217;t have to get up from my chair. I just logged in to <a href="http://IceTV.com.au/Interactive">IceTV</a>, found the program she was interested in, and told my PVR to record it via the website.  My PVR is a High-Definition <a href="http://beyonwiz.com.au/DP_S1_overview.asp" target="_blank">Beyonwiz DP-S1</a>. It&#8217;s wireless, but I&#8217;ve wired it in to the house LAN so we can watch movies from our D-Link <a href="http://www.dlink.com/products/?pid=509" target="_blank">DNS323</a> 1TB NAS</p>
+<p>We also have an older Topfield 5000 PVRT.  It&#8217;s only standard definition, but the cool thing about it is that it has an open programming interfacem , so a lot of people have written their own software to get it to do cool things.  One application I added to it was <a href="http://users.bigpond.net.au/deangelj/topfield/topfield.htm" target="_blank">ToppyPC</a> by John De Angelis.  It has a program called &#8220;TWIN&#8221; which adds a web page to your Topfield PVR.  So you can set timers, and record shows, like IceTV lets you do with the Beyonwiz.   ToppyPC needs another utility to run &#8211; an FTP server (<a href="http://www.topfield.cc/aldarin/ftp4t.html" target="_blank">ftp4t</a> by Aldarin) which runs on a PC which I connect to the Topfield via a USB cable.</p>
+<p>All this technology is both good and bad. It&#8217;s convenient, but I don&#8217;t get the exercise I need going up and down stairs to program the PVR!</p>
+<p>But at least I don&#8217;t have an angry six-year-old to contend with!</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>/cool-technology/feed/</wfw:commentRss>
+			<slash:comments>3</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>Some amazing facts</title>
+		<link>/some-amazing-facts/</link>
+					<comments>/some-amazing-facts/#respond</comments>
+		
+		<dc:creator><![CDATA[Neil.B.Ennis]]></dc:creator>
+		<pubDate>Mon, 27 Jul 2009 06:24:15 +0000</pubDate>
+				<category><![CDATA[General]]></category>
+		<guid isPermaLink="false">/?p=265</guid>
+
+					<description><![CDATA[I just watched this fascinating Youtube video. The world is an amazing place!]]></description>
+										<content:encoded><![CDATA[<p><object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="425" height="344" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0"><param name="allowFullScreen" value="true" /><param name="allowscriptaccess" value="always" /><param name="src" value="http://www.youtube.com/v/cL9Wu2kWwSY&amp;hl=en&amp;fs=1&amp;" /><param name="allowfullscreen" value="true" /><embed type="application/x-shockwave-flash" width="425" height="344" src="http://www.youtube.com/v/cL9Wu2kWwSY&amp;hl=en&amp;fs=1&amp;" allowfullscreen="true" allowscriptaccess="always"></embed></object><br />
+I just watched this fascinating Youtube video. The world is an amazing place!</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>/some-amazing-facts/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+	</channel>
+</rss>

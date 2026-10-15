@@ -1,0 +1,676 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Technical Musings</title>
+	<atom:link href="/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>The tech blog of Neil Ennis</description>
+	<lastBuildDate>Fri, 12 Dec 2025 01:30:36 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=6.9.10</generator>
+	<item>
+		<title>Home Assistant Automations</title>
+		<link>/home-assistant-automations/</link>
+					<comments>/home-assistant-automations/#comments</comments>
+		
+		<dc:creator><![CDATA[Neil.B.Ennis]]></dc:creator>
+		<pubDate>Thu, 20 Jun 2024 03:20:22 +0000</pubDate>
+				<category><![CDATA[General]]></category>
+		<guid isPermaLink="false">/?p=559</guid>
+
+					<description><![CDATA[I use Home Assistant to control various smart devices around our home, including our Tesla Powerwall. We are charged wholesale&#8230; ]]></description>
+										<content:encoded><![CDATA[
+<p>I use <a href="https://www.home-assistant.io/" data-type="link" data-id="https://www.home-assistant.io/">Home Assistant</a> to control various smart devices around our home, including our Tesla Powerwall.</p>
+
+
+
+<p>We are charged wholesale power prices by our electricity retailer <a href="https://amber.com.au" data-type="link" data-id="https://amber.com.au">Amber Electric</a>, which means that sometimes the price of our power is really low, and sometimes it is really high.  I can therefore use my battery to charge from the grid when the price is low, and sell back to the grid with the price is high.</p>
+
+
+
+<p>Amber has a product called &#8220;<a href="https://www.amber.com.au/solar-and-battery" data-type="link" data-id="https://www.amber.com.au/solar-and-battery">Smart Shift</a>&#8221; which can control when my battery buys and sells.  It works reasonably well, but sometimes I prefer to control the battery myself, and have set up some automations to do this.</p>
+
+
+
+<figure class="wp-block-image size-large"><img fetchpriority="high" decoding="async" width="1024" height="554" src="/wp-content/uploads/2024/06/BuySellPanel-1024x554.png" alt="" class="wp-image-560" srcset="/wp-content/uploads/2024/06/BuySellPanel-1024x554.png 1024w, /wp-content/uploads/2024/06/BuySellPanel-300x162.png 300w, /wp-content/uploads/2024/06/BuySellPanel-768x416.png 768w, /wp-content/uploads/2024/06/BuySellPanel.png 1321w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<p>The end result is a simple panel when lets me set the Buy and Sell price, and how I&#8217;d like the battery to operate:</p>
+
+
+
+<ul class="wp-block-list">
+<li>How low will I let it discharge?</li>
+
+
+
+<li>How high will I let it charge?</li>
+
+
+
+<li>How full must the battery be before I sell power?</li>
+
+
+
+<li>How low should the battery charge drop before I stop selling power?</li>
+</ul>
+
+
+
+<p>These things are defined in Home Assistant as Helpers.  They&#8217;re basically variables that you can set.</p>
+
+
+
+<p>I have three scripts which control the battery.  They define standard actions which I&#8217;d like to run at different times:</p>
+
+
+
+<figure class="wp-block-image size-large"><img decoding="async" width="1024" height="537" src="/wp-content/uploads/2024/06/Script-Operation-Mode-Self-Consumption-1024x537.png" alt="" class="wp-image-561" srcset="/wp-content/uploads/2024/06/Script-Operation-Mode-Self-Consumption-1024x537.png 1024w, /wp-content/uploads/2024/06/Script-Operation-Mode-Self-Consumption-300x157.png 300w, /wp-content/uploads/2024/06/Script-Operation-Mode-Self-Consumption-768x403.png 768w, /wp-content/uploads/2024/06/Script-Operation-Mode-Self-Consumption.png 1218w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<p>&#8220;Self Consumption&#8221; tells the battery to supply power to the house.  When I don&#8217;t want to buy or sell or use grid power.</p>
+
+
+
+<figure class="wp-block-image size-large"><img decoding="async" width="1024" height="542" src="/wp-content/uploads/2024/06/Script-Operation-Mode-Fast-Charge-1024x542.png" alt="" class="wp-image-562" srcset="/wp-content/uploads/2024/06/Script-Operation-Mode-Fast-Charge-1024x542.png 1024w, /wp-content/uploads/2024/06/Script-Operation-Mode-Fast-Charge-300x159.png 300w, /wp-content/uploads/2024/06/Script-Operation-Mode-Fast-Charge-768x407.png 768w, /wp-content/uploads/2024/06/Script-Operation-Mode-Fast-Charge.png 1184w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<p>&#8220;Fast Charge&#8221; tells the battery to charge up from the grid &#8211; usually when the power price is cheap.</p>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="557" src="/wp-content/uploads/2024/06/Script-Operation-Mode-Autonomous-1024x557.png" alt="" class="wp-image-563" srcset="/wp-content/uploads/2024/06/Script-Operation-Mode-Autonomous-1024x557.png 1024w, /wp-content/uploads/2024/06/Script-Operation-Mode-Autonomous-300x163.png 300w, /wp-content/uploads/2024/06/Script-Operation-Mode-Autonomous-768x418.png 768w, /wp-content/uploads/2024/06/Script-Operation-Mode-Autonomous.png 1199w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<p>&#8220;Autonomous&#8221; tells the battery to look at the &#8220;Utility Rate Plan&#8221; in the Tesla settings, and decide whether or not to sell power.</p>
+
+
+
+<figure class="wp-block-gallery has-nested-images columns-default is-cropped wp-block-gallery-1 is-layout-flex wp-block-gallery-is-layout-flex">
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="461" height="1024" data-id="565" src="/wp-content/uploads/2024/06/Powerwall-Utility-Rate-Plan-461x1024.png" alt="" class="wp-image-565" srcset="/wp-content/uploads/2024/06/Powerwall-Utility-Rate-Plan-461x1024.png 461w, /wp-content/uploads/2024/06/Powerwall-Utility-Rate-Plan-135x300.png 135w, /wp-content/uploads/2024/06/Powerwall-Utility-Rate-Plan-768x1707.png 768w, /wp-content/uploads/2024/06/Powerwall-Utility-Rate-Plan-691x1536.png 691w, /wp-content/uploads/2024/06/Powerwall-Utility-Rate-Plan-922x2048.png 922w, /wp-content/uploads/2024/06/Powerwall-Utility-Rate-Plan.png 1080w" sizes="auto, (max-width: 461px) 100vw, 461px" /></figure>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="461" height="1024" data-id="564" src="/wp-content/uploads/2024/06/Powerwall-Utility-Rate-Prices-461x1024.png" alt="" class="wp-image-564" srcset="/wp-content/uploads/2024/06/Powerwall-Utility-Rate-Prices-461x1024.png 461w, /wp-content/uploads/2024/06/Powerwall-Utility-Rate-Prices-135x300.png 135w, /wp-content/uploads/2024/06/Powerwall-Utility-Rate-Prices-768x1707.png 768w, /wp-content/uploads/2024/06/Powerwall-Utility-Rate-Prices-691x1536.png 691w, /wp-content/uploads/2024/06/Powerwall-Utility-Rate-Prices-922x2048.png 922w, /wp-content/uploads/2024/06/Powerwall-Utility-Rate-Prices.png 1080w" sizes="auto, (max-width: 461px) 100vw, 461px" /></figure>
+</figure>
+
+
+
+<p>The prices are artificial. I enter them via the Powerwall App. Basically they tell the Powerwall that power prices are expensive between 6:00am and 8:30am, and between 4:00pm and 9:00pm. Therefore if the battery ever switches to &#8220;Autonomous Mode&#8221; at these times, it will try to sell power. At other times, it will do nothing.</p>
+
+
+
+<p>Based on this information I have set up four more scripts:</p>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="935" src="/wp-content/uploads/2024/06/Automation-Battery-Mode-Buy-1024x935.png" alt="" class="wp-image-566" srcset="/wp-content/uploads/2024/06/Automation-Battery-Mode-Buy-1024x935.png 1024w, /wp-content/uploads/2024/06/Automation-Battery-Mode-Buy-300x274.png 300w, /wp-content/uploads/2024/06/Automation-Battery-Mode-Buy-768x701.png 768w, /wp-content/uploads/2024/06/Automation-Battery-Mode-Buy.png 1235w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<p>&#8220;Battery Mode Buy&#8221; does this:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Change the Battery Mode helper to display &#8220;Buy&#8221;.</li>
+
+
+
+<li>Send me a message via MQTT</li>
+
+
+
+<li>Change the battery reserve to its maximum (usually 100%)</li>
+
+
+
+<li>Run the &#8220;Fast Charge&#8221; script.</li>
+</ul>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="981" src="/wp-content/uploads/2024/06/Automation-Battery-Mode-Consume-1024x981.png" alt="" class="wp-image-567" srcset="/wp-content/uploads/2024/06/Automation-Battery-Mode-Consume-1024x981.png 1024w, /wp-content/uploads/2024/06/Automation-Battery-Mode-Consume-300x287.png 300w, /wp-content/uploads/2024/06/Automation-Battery-Mode-Consume-768x736.png 768w, /wp-content/uploads/2024/06/Automation-Battery-Mode-Consume.png 1173w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<p>&#8220;Battery Mode Consume&#8221; does this:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Change the Battery Mode helper to display &#8220;Consume&#8221;.</li>
+
+
+
+<li>Send me a message via MQTT</li>
+
+
+
+<li>Change the battery reserve to its minimum (usually 15%)</li>
+
+
+
+<li>Run the &#8220;Self Consumption&#8221; script.</li>
+</ul>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="984" src="/wp-content/uploads/2024/06/Automation-Battery-Mode-Hold-1024x984.png" alt="" class="wp-image-568" srcset="/wp-content/uploads/2024/06/Automation-Battery-Mode-Hold-1024x984.png 1024w, /wp-content/uploads/2024/06/Automation-Battery-Mode-Hold-300x288.png 300w, /wp-content/uploads/2024/06/Automation-Battery-Mode-Hold-768x738.png 768w, /wp-content/uploads/2024/06/Automation-Battery-Mode-Hold.png 1190w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<p>&#8220;Battery Mode Hold&#8221; does this:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Change the Battery Mode helper to display &#8220;Hold&#8221;.</li>
+
+
+
+<li>Send me a message via MQTT</li>
+
+
+
+<li>Change the battery reserve to its current charge level.  This forces the battery to stay at this level, neither importing nor exporting.</li>
+
+
+
+<li>Run the &#8220;Self Consumption&#8221; script.</li>
+</ul>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="857" src="/wp-content/uploads/2024/06/Automation-Battery-Mode-Sell-1024x857.png" alt="" class="wp-image-569" srcset="/wp-content/uploads/2024/06/Automation-Battery-Mode-Sell-1024x857.png 1024w, /wp-content/uploads/2024/06/Automation-Battery-Mode-Sell-300x251.png 300w, /wp-content/uploads/2024/06/Automation-Battery-Mode-Sell-768x642.png 768w, /wp-content/uploads/2024/06/Automation-Battery-Mode-Sell.png 1205w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<p>&#8220;Battery Mode Sell&#8221; does this:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Change the Battery Mode helper to display &#8220;Sell&#8221;.</li>
+
+
+
+<li>Send me a message via MQTT</li>
+
+
+
+<li>Run the &#8220;Autonomous&#8221; script.</li>
+</ul>
+
+
+
+<p>Now for the automations:</p>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="691" src="/wp-content/uploads/2024/06/image-1024x691.png" alt="" class="wp-image-571" srcset="/wp-content/uploads/2024/06/image-1024x691.png 1024w, /wp-content/uploads/2024/06/image-300x203.png 300w, /wp-content/uploads/2024/06/image-768x519.png 768w, /wp-content/uploads/2024/06/image.png 1219w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<p>The &#8220;Charge Battery&#8221; automation is triggered by one of two events:</p>
+
+
+
+<ol class="wp-block-list">
+<li>If the general power price (from the Amber API) is less than my specified &#8220;Buy Price&#8221;, or</li>
+
+
+
+<li>The general power price (from the Amber API) is negative (some days they pay us to consume power)</li>
+</ol>
+
+
+
+<p>There is also a precondition, which must be true: The &#8220;Demand Tariff&#8221; must not be active. We get charged additional fees for any consumption during the demand period, so I try to avoid consumption at that time.</p>
+
+
+
+<p>&#8220;Demand Tariff Active&#8221; is a binary sensor helper:</p>
+
+
+
+<figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="594" height="871" src="/wp-content/uploads/2024/06/image-1.png" alt="" class="wp-image-572" srcset="/wp-content/uploads/2024/06/image-1.png 594w, /wp-content/uploads/2024/06/image-1-205x300.png 205w" sizes="auto, (max-width: 594px) 100vw, 594px" /></figure>
+
+
+
+<figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="521" height="420" src="/wp-content/uploads/2024/06/image-2.png" alt="" class="wp-image-573" srcset="/wp-content/uploads/2024/06/image-2.png 521w, /wp-content/uploads/2024/06/image-2-300x242.png 300w" sizes="auto, (max-width: 521px) 100vw, 521px" /></figure>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="939" src="/wp-content/uploads/2024/06/image-4-1024x939.png" alt="" class="wp-image-575" srcset="/wp-content/uploads/2024/06/image-4-1024x939.png 1024w, /wp-content/uploads/2024/06/image-4-300x275.png 300w, /wp-content/uploads/2024/06/image-4-768x704.png 768w, /wp-content/uploads/2024/06/image-4.png 1185w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<p>The &#8220;Consume Battery&#8221; Automation is triggered by one of three events:</p>
+
+
+
+<ol class="wp-block-list">
+<li>The Power Price exceeds the &#8220;Buy Price&#8221;</li>
+
+
+
+<li>The &#8220;Demand Tariff&#8221; changes from OFF to ON</li>
+
+
+
+<li>The Power Price exceeds the &#8220;Max Hold Price&#8221;</li>
+</ol>
+
+
+
+<p>&#8220;Max Hold Price&#8221; is a binary sensor variable I set up in &#8220;sensor.yaml&#8221;:</p>
+
+
+
+<figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="645" height="202" src="/wp-content/uploads/2024/06/image-5.png" alt="" class="wp-image-576" srcset="/wp-content/uploads/2024/06/image-5.png 645w, /wp-content/uploads/2024/06/image-5-300x94.png 300w" sizes="auto, (max-width: 645px) 100vw, 645px" /></figure>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="940" src="/wp-content/uploads/2024/06/image-7-1024x940.png" alt="" class="wp-image-579" srcset="/wp-content/uploads/2024/06/image-7-1024x940.png 1024w, /wp-content/uploads/2024/06/image-7-300x275.png 300w, /wp-content/uploads/2024/06/image-7-768x705.png 768w, /wp-content/uploads/2024/06/image-7.png 1437w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<p>The &#8220;Dispatch Begin&#8221; (Start Selling) automation is triggered whenever the Feed In Tariff is higher than my minimum sell price.</p>
+
+
+
+<p>It will only run if the battery level is above the minimum &#8220;sell&#8221; charge level, which I have currently set to 60%.  </p>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="545" src="/wp-content/uploads/2024/06/image-8-1024x545.png" alt="" class="wp-image-580" srcset="/wp-content/uploads/2024/06/image-8-1024x545.png 1024w, /wp-content/uploads/2024/06/image-8-300x160.png 300w, /wp-content/uploads/2024/06/image-8-768x408.png 768w, /wp-content/uploads/2024/06/image-8.png 1476w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<p>The &#8220;Dispatch End&#8221; (Stop Selling) automation is triggered by one of two events:</p>
+
+
+
+<ol class="wp-block-list">
+<li>The &#8220;Feed In Price&#8221; falls below my &#8220;Sell Price&#8221;, or</li>
+
+
+
+<li>The Battery Charge Level falls below my minimum charge percentage (currently 40%).</li>
+</ol>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="758" src="/wp-content/uploads/2024/06/image-9-1024x758.png" alt="" class="wp-image-581" srcset="/wp-content/uploads/2024/06/image-9-1024x758.png 1024w, /wp-content/uploads/2024/06/image-9-300x222.png 300w, /wp-content/uploads/2024/06/image-9-768x568.png 768w, /wp-content/uploads/2024/06/image-9.png 1454w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<p>The &#8220;Preserve Battery&#8221; Automation is triggered whenever the power price falls below the maximum hold price.</p>
+
+
+
+<p>The power price must be above my &#8220;Buy&#8221; price (otherwise I&#8217;d be buying, not preserving), and the Demand Tariff must be off.</p>
+
+
+
+<p>All of these automations rely on the &#8220;<a href="https://teslemetry.com/" data-type="link" data-id="https://teslemetry.com/">Teslemetry</a>&#8221; integration which gives me greater control over my battery than the standard Tesla integration.  It&#8217;s a paid service, but it&#8217;s cheap, and it always works.</p>
+
+
+
+<p>If you need me to clarify anything, please leave a comment.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>/home-assistant-automations/feed/</wfw:commentRss>
+			<slash:comments>3</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>Problems installing Office 365 on a Laptop with Wireless Connection</title>
+		<link>/problems-installing-office-365/</link>
+					<comments>/problems-installing-office-365/#respond</comments>
+		
+		<dc:creator><![CDATA[Neil.B.Ennis]]></dc:creator>
+		<pubDate>Fri, 18 Mar 2016 01:01:12 +0000</pubDate>
+				<category><![CDATA[Harrdware]]></category>
+		<category><![CDATA[Software]]></category>
+		<guid isPermaLink="false">/?p=471</guid>
+
+					<description><![CDATA[My daughter has a Toshiba Satellite Laptop and was given a free copy of Microsoft Office 365 as part of&#8230; ]]></description>
+										<content:encoded><![CDATA[<p><img loading="lazy" decoding="async" class="alignnone size-full" src="https://s3.ap-southeast-2.amazonaws.com/tech.neilennis.com/wp-content/uploads/2016/03/18105022/COU3GBAD_1.jpg" alt="" width="300" height="300" /><br />
+<img loading="lazy" decoding="async" class="alignnone size-medium" src="https://s3.ap-southeast-2.amazonaws.com/tech.neilennis.com/wp-content/uploads/2016/03/18105139/Image_AcrossDevices_558x2721.png" alt="" width="300" height="146" /></p>
+<p>My daughter has a Toshiba Satellite Laptop and was given a free copy of Microsoft Office 365 as part of her school enrollment.</p>
+<p>Unfortunately when she upgraded her laptop to Windows 10, the on-board Ethernet adapter stopped working, so she only had WiFi network access.</p>
+<p>When we tried to download office using the new &#8220;Click to Install&#8221; technology, the installation continually failed because the WiFi connection was not fast enough.</p>
+<p>Sadly, Office 365 is not available on CD or DVD, so the only way we could install it was as a download.</p>
+<p>I am aware that Microsoft offers an offline installation option via the &#8220;My Account&#8221; option, but this isn&#8217;t available for school-based copies of Office, only for store-bought copies.  The school portal only allows a &#8220;Click to Install&#8221; option.</p>
+<p>After trying to fix the on-board Ethernet adapter, and scouring the web for Windows 10 drivers, I decided this was a waste of my time, and bought a Comsol USB 3.0 Ethernet Adapter for the laptop.</p>
+<p>This turns a USB 3.0 port into a hard-wired Ethernet adapter.</p>
+<p>I then plugged the laptop into the wired Lan via an RJ45 cable, started the Office 365 download, and hey presto! It worked!</p>
+<p>FigJam to me.</p>
+<p>Cost of Comsol USB 3.0 Ethernet adapter: $43.88 from Officeworks.</p>
+<p>I could have sent the laptop off to Toshiba to get fixed, but considering the effort taking it there, waiting for it to get fixed, bringing it back, I decided it was cheaper to spend $43 on the adapter.</p>
+<p>Warning: Make sure you plug it into a USB 3 port on the laptop.  It doesn&#8217;t seem to work if you plug it into a USB 2 port.</p>
+<p>I hope this helps anyone else with a similar problem.</p>
+<p>&nbsp;</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>/problems-installing-office-365/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>Minor fixes to DIY iGoogle Start Page</title>
+		<link>/minor-fixes-to-diy-igoogle-start-page/</link>
+					<comments>/minor-fixes-to-diy-igoogle-start-page/#respond</comments>
+		
+		<dc:creator><![CDATA[Neil.B.Ennis]]></dc:creator>
+		<pubDate>Tue, 21 Apr 2015 10:57:01 +0000</pubDate>
+				<category><![CDATA[RSS]]></category>
+		<guid isPermaLink="false">/?p=451</guid>
+
+					<description><![CDATA[I&#8217;ve upgraded the DIY &#8220;iGoogle&#8221; start page. You can see the latest version here: http://nbe.me/demo The previous version is here:&#8230; ]]></description>
+										<content:encoded><![CDATA[<p>I&#8217;ve upgraded the DIY &#8220;iGoogle&#8221; start page.</p>
+<p>You can see the latest version here: <a href="http://nbe.me/demo" target="_blank">http://nbe.me/demo</a><br />
+The previous version is here: <a href="http://nbe.me/olddemov3" target="_blank">http://nbe.me/olddemov3</a><br />
+The previous previous version is here: <a href="http://nbe.me/olddemov2" target="_blank">http://nbe.me/olddemov2</a><br />
+You can download the source for the page here: <a href="http://nbe.me/demo/d.zip" target="_blank">http://nbe.me/demo/d.zip</a></p>
+<p>There was a bug in the Google Ajax Slideshow code which meant that when you clicked on an image, instead of redirecting your browser to the source of the image, the slideshow would redirect your browser to the URL of the current page.</p>
+<p>I&#8217;ve fixed that bug, thanks to some excellent advice from jgeerdes at https://groups.google.com/forum/#!msg/google-ajax-search-api/Ljom17bulZc/UYg2154Nwp0J</p>
+<p>Enjoy!</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>/minor-fixes-to-diy-igoogle-start-page/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>Enhancements to DIY iGoogle start page</title>
+		<link>/enhancements-to-diy-igoogle-start-page/</link>
+					<comments>/enhancements-to-diy-igoogle-start-page/#respond</comments>
+		
+		<dc:creator><![CDATA[Neil.B.Ennis]]></dc:creator>
+		<pubDate>Thu, 29 Jan 2015 22:43:38 +0000</pubDate>
+				<category><![CDATA[General]]></category>
+		<guid isPermaLink="false">/?p=440</guid>
+
+					<description><![CDATA[I’ve upgraded the DIY “iGoogle” start page. You can see the latest version here: http://nbe.me/demo The previous version is here:&#8230; ]]></description>
+										<content:encoded><![CDATA[<p>I’ve upgraded the DIY “iGoogle” start page.</p>
+<p>You can see the latest version here: <a href="http://nbe.me/demo" target="_blank">http://nbe.me/demo</a><br />
+The previous version is here: <a href="http://nbe.me/olddemov2" target="_blank">http://nbe.me/olddemov2</a><br />
+The previous previous version is here: <a href="http://nbe.me/olddemo" target="_blank">http://nbe.me/olddemo</a><br />
+You can download the source for the page here: <a href="http://nbe.me/demo/d.zip" target="_blank">http://nbe.me/demo/d.zip</a></p>
+<p>The major enhancement is that you can now embed html into the page &#8211; which makes it easy to add Youtube videos, or iFrame widgets.</p>
+<p><a href="/index.php/enhancements-to-diy-igoogle-start-page/setupscreen/" rel="attachment wp-att-441"><img loading="lazy" decoding="async" src="/wp-content/uploads/2015/01/SetupScreen.jpg" alt="Setup Screen" width="628" height="529" class="alignnone size-full wp-image-441" srcset="/wp-content/uploads/2015/01/SetupScreen.jpg 628w, /wp-content/uploads/2015/01/SetupScreen-300x253.jpg 300w, /wp-content/uploads/2015/01/SetupScreen-150x126.jpg 150w, /wp-content/uploads/2015/01/SetupScreen-400x337.jpg 400w" sizes="auto, (max-width: 628px) 100vw, 628px" /></a></p>
+<p>To add embed code, click on Setup and add a new widget with a type of &#8220;html&#8221;. In the &#8220;data uri&#8221; field, paste your embed code. For example, to add a youtube video, you&#8217;d paste this code into the &#8220;data uri&#8221; field:</p>
+<p><code>&lt;iframe width="320" height=auto src="https://www.youtube.com/embed/DPP1INgPtSs" frameborder="0" allowfullscreen&gt;&lt;/iframe&gt;</code></p>
+<p>Make sure you keep the width of any iframes to 320 pixels or less, otherwise the layout of the screen won&#8217;t look too good.</p>
+<p>Also &#8211; if you&#8217;re trying out the demo page, you might want to press Ctrl-F5 to clear your browser cache, so the new version gets loaded.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>/enhancements-to-diy-igoogle-start-page/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>ObSrv: No Longer For Sale</title>
+		<link>/obsrv-no-longer-for-sale/</link>
+					<comments>/obsrv-no-longer-for-sale/#respond</comments>
+		
+		<dc:creator><![CDATA[Neil.B.Ennis]]></dc:creator>
+		<pubDate>Mon, 24 Feb 2014 00:29:29 +0000</pubDate>
+				<category><![CDATA[General]]></category>
+		<category><![CDATA[ObSrv]]></category>
+		<guid isPermaLink="false">/?p=433</guid>
+
+					<description><![CDATA[Thank you for the emails of support and kind donations. After a few minor changes and exchanges with Google I&#8230; ]]></description>
+										<content:encoded><![CDATA[<p>Thank you for the emails of support and kind donations.</p>
+<p>After a few minor changes and exchanges with Google I have managed to rectify the problem relating to inappropriate images on the detail pages.</p>
+<p>Because of your kind support, and the resolution of issues with Google, I&#8217;ve changed my mind and decided not to sell ObSrv.</p>
+<p>I plan to keep it running indefinitely.</p>
+<p>If you have any issues, or need support, please leave a message or contact me at:<br />
+mail at neilennis dot com</p>
+<p>If you&#8217;d like to donate to help keep the site running, I&#8217;ve added a couple of paypal buttons on the site.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>/obsrv-no-longer-for-sale/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>ObSrv.com is for sale</title>
+		<link>/obsrv-com-is-for-sale/</link>
+					<comments>/obsrv-com-is-for-sale/#respond</comments>
+		
+		<dc:creator><![CDATA[Neil.B.Ennis]]></dc:creator>
+		<pubDate>Tue, 28 Jan 2014 02:45:15 +0000</pubDate>
+				<category><![CDATA[ObSrv]]></category>
+		<guid isPermaLink="false">/?p=424</guid>
+
+					<description><![CDATA[ObSrv.com is a web service which provides image feeds for any subject you like. The content is updated hourly, allowing&#8230; ]]></description>
+										<content:encoded><![CDATA[<p><a href="http://obsrv.com" target="_blank">ObSrv.com</a> is a web service which provides image feeds for any subject you like.</p>
+<p>The content is updated hourly, allowing you to provide high-quality, relevant graphics for any website, or feed reader.</p>
+<p>I&#8217;ve been able to maintain this site and host it because of the modest income stream I derive from Google ads that appear on the info pages that are displayed when a website visitor clicks on an image.  This has been great because:</p>
+<ol>
+<li>Web publishers didn&#8217;t need to pay anything.</li>
+<li>The ads didn&#8217;t intrude on your site &#8211; they only displayed when an interested user clicked on an image.</li>
+<li>Clicking on the image redirected to an intermediate site which displayed the ad, and allowed the user to proceed to the original site.</li>
+</ol>
+<p>I didn&#8217;t have any say on what sort of images web publishers displayed &#8211; my only request was that web publishers did not use ObSrv to display adult-related images.</p>
+<p>That&#8217;s not because I am a prude &#8211; it&#8217;s because Google prohibits ads on these sorts of sites.</p>
+<p>Unfortunately, some people ignored this request, Google cancelled ad serving for the ObSrv site, and now it&#8217;s not paying me anything.  I can&#8217;t afford to keep it running for free.</p>
+<p>So I have decided to sell it.</p>
+<p>If you&#8217;re interested, please make an offer.  No serious offer will be ignored.</p>
+<p>I&#8217;m sorry for any inconvenience.  I&#8217;m willing to be flexibile to help you out:</p>
+<p><strong>If you need access to ObSrv prior to it being sold, please email mail@obsrv.com.  If you&#8217;re one of the incredibly generous people who has made a donation to me in the past, or if you would like to make a modest donation, I will send you a temporary URL which will keep images being served to your site until ObSrv.com is sold.</strong></p>
+<p>If enough people continue to make regular modest donations I won&#8217;t sell it.</p>
+<p>What&#8217;s a reasonable donation?  I&#8217;m flexible, but $20-$30 per site per year seems like a reasonable amount.</p>
+<p>If you want to buy it, here&#8217;s what you get:</p>
+<p>1. The domain ObSrv.com.  A cool five letter dot com domain &#8211; imagine what you could do with it!</p>
+<p>2. The ASP.NET and MS-SQL Server Source Code.</p>
+<p>3. The data.</p>
+<p>4. 12 months hosting for the site until you find somewhere else to host it.</p>
+<p>5. 12 months tech support for the source code.  I&#8217;m not going to over-promise here.  The source code is well documented.  I&#8217;ll answer any questions you have.  I&#8217;ll even do minor mods for you &#8211; but it has to cut both ways, and the level of support depends on the price at which you buy from me.</p>
+<p>About me: Do a Google Search on me: &#8220;Neil Ennis&#8221;.  You&#8217;ll soon see I&#8217;ve been around a long time, I keep my promises, and I value long-term business relationships.  I won&#8217;t let you down.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>/obsrv-com-is-for-sale/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>DNS323 Formatting &#8220;stuck&#8221; at 94%</title>
+		<link>/dns323-formatting-stuck-at-94/</link>
+					<comments>/dns323-formatting-stuck-at-94/#respond</comments>
+		
+		<dc:creator><![CDATA[Neil.B.Ennis]]></dc:creator>
+		<pubDate>Thu, 05 Dec 2013 08:19:45 +0000</pubDate>
+				<category><![CDATA[General]]></category>
+		<category><![CDATA[Harrdware]]></category>
+		<guid isPermaLink="false">/?p=415</guid>
+
+					<description><![CDATA[The DLINK DNS323 is a network storage device that takes two SATA disk drives,  plugs into your local network, and&#8230; ]]></description>
+										<content:encoded><![CDATA[<p><a href="/index.php/dns323-formatting-stuck-at-94/dns-323_side/" rel="attachment wp-att-418"><img loading="lazy" decoding="async" class="alignleft size-full wp-image-418" alt="DNS-323_side" src="/wp-content/uploads/2013/12/DNS-323_side.png" width="380" height="290" srcset="/wp-content/uploads/2013/12/DNS-323_side.png 380w, /wp-content/uploads/2013/12/DNS-323_side-300x228.png 300w, /wp-content/uploads/2013/12/DNS-323_side-150x114.png 150w" sizes="auto, (max-width: 380px) 100vw, 380px" /></a>The <a href="http://www.dlink.com.au/products/?pid=666" target="_blank">DLINK DNS323</a> is a network storage device that takes two SATA disk drives,  plugs into your local network, and acts as a file server for media and documents.</p>
+<p>We&#8217;ve had one for the last 5 years, and it has served us very well.  It&#8217;s quick, reliable and easy to use.</p>
+<p>We had two 1TB Western Digital &#8220;Caviar&#8221; drives installed.</p>
+<p>Unfortunately, one of those drives failed last night.  I replaced it with a Seagate &#8220;Baracuda&#8221; 2TB drive.  We&#8217;re not running the DNS323 in a &#8220;RAID&#8221; configuration, so a different type of drive isn&#8217;t a problem.</p>
+<p>When I booted up the unit with the new drive, the web interface told me it found the new drive, and was it ok to format it?  It assured me my other drive would be ok.</p>
+<p>I answered &#8220;Yes&#8221; and it started formatting the new drive, but it stopped when it got to 94%.</p>
+<p>There are a whole lot of articles online about this problem, and people have come up with many and various issues to get around it like using a different browser, clearing out cookes, even formatting the drive on a separate machine.</p>
+<p><span style="text-decoration: underline;"><strong>There was a mcuh simpler solution, however.</strong></span></p>
+<p>A 2TB drive is pretty big.  It takes a long time to format.  It just so happens that on this device, most of the formatting happens when it gets to the 94% mark.</p>
+<p><span style="text-decoration: underline;"><strong>So the easiest solution to this problem is to WAIT. </strong> </span></p>
+<p>Do nothing for an hour.  Eventually it will finish formatting, and everything will be ok.</p>
+<p>If you don&#8217;t like doing this, feel free to try a different browser, or bury your computer in peat for a couple of hours, or chant incantations for a while.  I assure you whatever you do, if it takes longer than an hour, it will fix the problem.</p>
+<p>Well&#8230;. it will appear to fix the problem.</p>
+<p>Or &#8211; just wait.  Let the thing finish formatting.  Then everything will be ok.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>/dns323-formatting-stuck-at-94/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>DIY iGoogle Upgrade</title>
+		<link>/diy-igoogle-upgrade/</link>
+					<comments>/diy-igoogle-upgrade/#comments</comments>
+		
+		<dc:creator><![CDATA[Neil.B.Ennis]]></dc:creator>
+		<pubDate>Thu, 14 Nov 2013 03:16:32 +0000</pubDate>
+				<category><![CDATA[General]]></category>
+		<category><![CDATA[Software]]></category>
+		<guid isPermaLink="false">/?p=399</guid>
+
+					<description><![CDATA[I&#8217;ve upgraded the DIY &#8220;iGoogle&#8221; start page. You can see the latest version here: http://nbe.me/demo The previous version is here:&#8230; ]]></description>
+										<content:encoded><![CDATA[<p>I&#8217;ve upgraded the DIY &#8220;iGoogle&#8221; start page.</p>
+<p>You can see the latest version here: <a href="http://nbe.me/demo" target="_blank">http://nbe.me/demo</a><br />
+The previous version is here: <a href="http://nbe.me/olddemov2" target="_blank">http://nbe.me/olddemov2</a><br />
+The previous previous version is here: <a href="http://nbe.me/olddemo" target="_blank">http://nbe.me/olddemo</a><br />
+You can download the source for the page here: <a href="http://nbe.me/demo/d.zip" target="_blank">http://nbe.me/demo/d.zip</a></p>
+<p>Major items:<br />
+1. Each widget has its own &#8220;Settings&#8221; page which allows you to edit settings. Just click on the &#8220;settings&#8221; button at the top right of any widget:<br />
+<a href="/index.php/diy-igoogle-upgrade/widget-settings-button/" rel="attachment wp-att-400"><img loading="lazy" decoding="async" class="size-medium wp-image-400 alignnone" alt="Widget Settings Button" src="/wp-content/uploads/2013/11/Widget-Settings-Button-300x280.jpg" width="300" height="280" srcset="/wp-content/uploads/2013/11/Widget-Settings-Button-300x280.jpg 300w, /wp-content/uploads/2013/11/Widget-Settings-Button-150x140.jpg 150w, /wp-content/uploads/2013/11/Widget-Settings-Button.jpg 372w" sizes="auto, (max-width: 300px) 100vw, 300px" /></a></p>
+<p>2. You can add / edit stocks &amp; shares. If you click on the settings button for the stock widget you get a screen which lets you change the existing stock codes, quantities and buy prices.:<br />
+<a href="/index.php/diy-igoogle-upgrade/stock-edit-screen/" rel="attachment wp-att-401"><img loading="lazy" decoding="async" class="size-medium wp-image-401 alignnone" alt="Stock Edit Screen" src="/wp-content/uploads/2013/11/Stock-Edit-Screen-300x284.jpg" width="300" height="284" srcset="/wp-content/uploads/2013/11/Stock-Edit-Screen-300x284.jpg 300w, /wp-content/uploads/2013/11/Stock-Edit-Screen-150x142.jpg 150w, /wp-content/uploads/2013/11/Stock-Edit-Screen.jpg 336w" sizes="auto, (max-width: 300px) 100vw, 300px" /></a><br />
+To delete a stock item, click on the red &#8220;X&#8221; button.<br />
+To move a stock item up a line, click on the blue up-arrow (↑)<br />
+To move a stock item down a line, click on the blue down-arrow (↓)<br />
+To add a stock item, fill in the blanks and click the green &#8220;+&#8221; button.<br />
+To save changes, click on the &#8220;SAVE&#8221; button.<br />
+To cancel changes or close the edit dialog, click on the [x] button at the top right of the window.</p>
+<p>3. You can edit the links in the top-bar by clicking on the &#8220;*&#8221; to the right of the links in the top bar.</p>
+<p>4. You can add / edit / remove widgets by clicking on the &#8220;Setup&#8221; link in the top bar.<br />
+<a href="/index.php/diy-igoogle-upgrade/setup/" rel="attachment wp-att-404"><img loading="lazy" decoding="async" class="size-full wp-image-404 alignnone" alt="setup" src="/wp-content/uploads/2013/11/setup.jpg" width="644" height="540" srcset="/wp-content/uploads/2013/11/setup.jpg 644w, /wp-content/uploads/2013/11/setup-300x251.jpg 300w, /wp-content/uploads/2013/11/setup-150x125.jpg 150w, /wp-content/uploads/2013/11/setup-400x335.jpg 400w" sizes="auto, (max-width: 644px) 100vw, 644px" /></a><br />
+To delete a widget, click on the red &#8220;X&#8221; button.<br />
+To move a widget up a line, click on the blue up-arrow (↑)<br />
+To move a widget down a line, click on the blue down-arrow (↓)<br />
+To add a widget, fill in the blanks and click the green &#8220;+&#8221; button.<br />
+To save changes, click on the &#8220;SAVE&#8221; button.<br />
+To cancel changes or close the edit dialog, click on the [x] button at the top right of the window.<br />
+Click &#8220;Factory Reset&#8221; to clear all your settings and revert back to the original settings that you downloaded from the website.</p>
+<p>5. All settings are stored locally on your hard drive using the HTML5 &#8220;localStorage&#8221; facility. This is like a cookie, only bigger. The page settings were over 4,000 bytes in size, so would not fit in a cookie which officially can&#8217;t be larger than about 4,000 bytes. Local storage can be as large as your hard drive, so there are no storage limits, and the security / privacy settings are the same as for cookies.</p>
+<p>You can download the source code here:<br />
+<a href="http://nbe.me/demo/d.zip" target="_blank">http://nbe.me/demo/d.zip</a></p>
+<p>If you plan to use the weather widget, please change the &#8220;Weather API Key&#8221; in the &#8220;Setup&#8221; screen. Since lots of people are using this start page, the current API key will run out of API calls each day and won&#8217;t work. There are instructions on getting your own keys here:<br />
+<a href="/index.php/diy-replacement-for-igoogle/" target="_blank">/index.php/diy-replacement-for-igoogle/</a></p>
+<p>As with all previous versions, you don&#8217;t need to load this start page on a web server. It will run fine from a folder on your computer. Just unzip the zip file, and click on index.html.</p>
+<p>If you plan to put it on a public web server, you might want to password protect it with a htaccess file to protect your privacy.</p>
+<p>Please try it out and let me know how you go.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>/diy-igoogle-upgrade/feed/</wfw:commentRss>
+			<slash:comments>2</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>DIY Replacement for iGoogle.</title>
+		<link>/diy-replacement-for-igoogle/</link>
+					<comments>/diy-replacement-for-igoogle/#respond</comments>
+		
+		<dc:creator><![CDATA[Neil.B.Ennis]]></dc:creator>
+		<pubDate>Thu, 24 Oct 2013 00:22:28 +0000</pubDate>
+				<category><![CDATA[General]]></category>
+		<category><![CDATA[Software]]></category>
+		<guid isPermaLink="false">/?p=395</guid>
+
+					<description><![CDATA[iGoogle will be gone at the end of this month. I love iGoogle. It was free, convenient, and worked well.&#8230; ]]></description>
+										<content:encoded><![CDATA[<p><a href="http://iGoogle.com" target="_blank">iGoogle</a> will be gone at the end of this month.</p>
+<p>I love iGoogle. It was free, convenient, and worked well. But because it was provided free by Google, it&#8217;s their right to pull the pin on it if they want to.</p>
+<p>This event made me realize that any free service online may be cancelled. So if you don&#8217;t want the inconvenience of losing a free service that you love, you&#8217;re best off doing it yourself.</p>
+<p><a href="http://nbe.me/demo" target="_blank">Here&#8217;s my modest attempt at writing my own iGoogle replacement page.</a></p>
+<p>You can download the source for the page here: <a href="http://nbe.me/demo/d.zip" target="_blank">http://nbe.me/demo/d.zip</a></p>
+<p>When you&#8217;ve downloaded the zip, you can unzip it to your own hard drive, or put it on a web server somewhere.</p>
+<p>Before you start using it, you need two things: A Google API Key, and a Wunderground API Key.</p>
+<h3>Google API Key</h3>
+<p>1. Go to <a href="https://code.google.com/apis/console" target="_blank">https://code.google.com/apis/console</a><br />
+2. If prompted, click on the &#8220;Create Project&#8221; button<br />
+3. Click on the &#8220;Services&#8221; button and change the status of &#8220;Custom Search API&#8221; to &#8220;ON&#8221;. Accept the terms.<br />
+4. Click on the &#8220;API Access&#8221; Link<br />
+5. In the &#8220;Simple API Access&#8221; section, click on &#8220;Create new Server key&#8230;&#8221;<br />
+Leave the &#8220;IP Address&#8221; box blank, and click &#8220;Create&#8221;<br />
+6. Copy the &#8220;API key&#8221;. This is your &#8220;Google Key&#8221; that you need to put in your index.html<br />
+7. Edit &#8220;index.html&#8221; and scroll to line 21 or there abouts. It will say something like:</p>
+<p style="padding-left: 30px;">var GoogleKey = &#8220;<span style="color: #ff0000;">XXaaAaAAaAaAA9A9a9aaaaaAAA99a9aaaaA9AAA</span>&#8220;; // Get your Google key here: https://code.google.com/apis/console</p>
+<p>8. Replace the red key with your Google API key.<br />
+9. Save the index.html file</p>
+<h3> Wunderground Key</h3>
+<p>1. Go to <a href="http://www.wunderground.com/weather/api/" target="_blank">http://www.wunderground.com/weather/api/</a><br />
+2. Click on &#8220;Sign Up for FREE&#8221;<br />
+3. Create your free account<br />
+4. Activate your membership<br />
+5. Login to Wunderground<br />
+6. Click on &#8220;Explore My Options&#8221;.<br />
+7. Select &#8220;Developer&#8221; option ($0) then click &#8220;Purchase Key&#8221;<br />
+8. Complete the questionaire honestly.<br />
+9. Click on the &#8220;Key Stettings&#8221; tab.<br />
+10. Copy the &#8220;Key ID&#8221;. This is your &#8220;Weather Key&#8221; that you need to put in your index.html<br />
+11. Edit &#8220;index.html&#8221; and scroll to line 23 or there abouts. It will say something like:</p>
+<p style="padding-left: 30px;">var WeatherKey     = &#8220;<span style="color: #ff0000;">99999999999aaaaa</span>&#8220;; // Get your API key here: http://www.wunderground.com/weather/api/</p>
+<p>12. Replace the red key with your Weather key.<br />
+13. Save the index.html file</p>
+<p>You might want to change &#8220;WeatherCountry&#8221; and &#8220;WeatherCity&#8221; to reflect your home country and city.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>/diy-replacement-for-igoogle/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>ObSrv Bug Fix &#8211; Please read</title>
+		<link>/obsrv-bug-fix-please-read/</link>
+					<comments>/obsrv-bug-fix-please-read/#comments</comments>
+		
+		<dc:creator><![CDATA[Neil.B.Ennis]]></dc:creator>
+		<pubDate>Tue, 18 Jun 2013 04:01:55 +0000</pubDate>
+				<category><![CDATA[ObSrv]]></category>
+		<guid isPermaLink="false">/?p=390</guid>
+
+					<description><![CDATA[I&#8217;ve fixed a bug with ObSrv that was causing empty image feeds to appear. There is a long term problem&#8230; ]]></description>
+										<content:encoded><![CDATA[<p>I&#8217;ve fixed a bug with ObSrv that was causing empty image feeds to appear.</p>
+<p>There is a long term problem that we need to address, and I need your help to sort it out.</p>
+<p>The problem is that Google is limiting the number of image searches that ObSrv can do to 100 per day.  The problem is that once we exceed this limit, no images are returned and you get a blank feed.</p>
+<p>I&#8217;ve temporarily fixed this problem by changing the image search provider.  I&#8217;m not saying which, as I don&#8217;t want to cause any more waves.</p>
+<p>But eventually they&#8217;ll start blocking excessive image searches as well.</p>
+<p>So I&#8217;m considering changing ObSrv to require you to supply a Google API key.  It won&#8217;t be hard to do.  All yu need to do is go to the <a href="https://code.google.com/apis/console/" target="_blank">Google Code API console</a>, log in (or create an account) and request an API key.</p>
+<p>Future versions of ObSrv will require you to enter that API key as part of the Feed URL.</p>
+<p>For now, you don&#8217;t need to do anything.  Everything should be working perfectly.  Your images should come through as expected.</p>
+<p>I&#8217;m just alerting you to what may have to happen, and I&#8217;d like your feedback please.</p>
+<p>You once might have had a feed URL that was something like: http://obsrv.com/General/ImageFeed.aspx?mountain+wallpaper</p>
+<p>But I&#8217;m suggesting we change that to something like: http://obsrv.com/General/ImageFeed.aspx?mountain+wallpaper&#038;APIKEY=[your API KEY]</p>
+<p>This way, any ObSrv feed requests will be linked to your API KEY and not mine.  And (provided you don&#8217;t go over 100 requests per day) Google won&#8217;t hassle you.  This shouldn&#8217;t be a problem.  Image feeds don&#8217;t update that often.  Even if you refreshed the feed every hour you&#8217;d be able to have four separate feeds and stay under the limit.  </p>
+<p>If you exceed Google&#8217;s limit, they&#8217;ll probably want you to open up a commercial account with them and pay them something.  This has nothing to do with me.  I&#8217;m not asking for your money &#8211; I&#8217;m just explaining how Google deals with people who use their resources in an unusual way.</p>
+<p>Please leave a comment, or email me, and let me know your thoughts.</p>
+<p>The challenge we face is that Search Engines are a moving target.  Writing a web service like ObSrv that keeps up with this target is difficult, but not impossible.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>/obsrv-bug-fix-please-read/feed/</wfw:commentRss>
+			<slash:comments>2</slash:comments>
+		
+		
+			</item>
+	</channel>
+</rss>

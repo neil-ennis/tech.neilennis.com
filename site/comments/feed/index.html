@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	
+	>
+<channel>
+	<title>
+	Comments for Technical Musings	</title>
+	<atom:link href="/comments/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>The tech blog of Neil Ennis</description>
+	<lastBuildDate>Tue, 26 Aug 2025 03:50:42 +0000</lastBuildDate>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=6.9.10</generator>
+	<item>
+		<title>
+		Comment on Home Assistant Automations by hauser		</title>
+		<link>/home-assistant-automations/comment-page-1/#comment-2443</link>
+
+		<dc:creator><![CDATA[hauser]]></dc:creator>
+		<pubDate>Tue, 26 Aug 2025 03:50:42 +0000</pubDate>
+		<guid isPermaLink="false">/?p=559#comment-2443</guid>
+
+					<description><![CDATA[All good...thanks Neil for your response. It is still very helpul. I work in tech too, but well past my coding days. I just like playing round with tech and could&#039;nt agree with you more - these experiments can come back and hurt your back pocket :-) if you are not careful...
+
+I was using Netzero as well but mainly for simple automations to allow Grid Charging of my PW2&#039;s on a set schedule (Free 3hr electricity plans). I was aware they had Amber integration but I did&#039;nt use it to it&#039;s full potential esp after they went to a paid model. I have the Amber integration setup in HA so in theory I have access to the live prices &#038;  should be able to replicate what was possible in Netzero. I&#039;m in Melbourne and thought this is right season to experiment as our household consumption is low during spring before peaking in Summer.  The 3rd PW2 was just added last week, so in a way I want to use its capacity exclusively for grid exports to maximise my earnings/ROI and retain the other 2 for self consumption during Spikes/Peak Periods. 
+
+It&#039;s a bummer I need to turn off Smartshift entirely as I can&#039;t seem to figure out how to setup curtailment without it as I no longer have API access to my inverters (I think it expired after 2 years). I might have to find other ways of doing this...]]></description>
+			<content:encoded><![CDATA[<p>All good&#8230;thanks Neil for your response. It is still very helpul. I work in tech too, but well past my coding days. I just like playing round with tech and could&#8217;nt agree with you more &#8211; these experiments can come back and hurt your back pocket 🙂 if you are not careful&#8230;</p>
+<p>I was using Netzero as well but mainly for simple automations to allow Grid Charging of my PW2&#8217;s on a set schedule (Free 3hr electricity plans). I was aware they had Amber integration but I did&#8217;nt use it to it&#8217;s full potential esp after they went to a paid model. I have the Amber integration setup in HA so in theory I have access to the live prices &amp;  should be able to replicate what was possible in Netzero. I&#8217;m in Melbourne and thought this is right season to experiment as our household consumption is low during spring before peaking in Summer.  The 3rd PW2 was just added last week, so in a way I want to use its capacity exclusively for grid exports to maximise my earnings/ROI and retain the other 2 for self consumption during Spikes/Peak Periods. </p>
+<p>It&#8217;s a bummer I need to turn off Smartshift entirely as I can&#8217;t seem to figure out how to setup curtailment without it as I no longer have API access to my inverters (I think it expired after 2 years). I might have to find other ways of doing this&#8230;</p>
+]]></content:encoded>
+		
+			</item>
+		<item>
+		<title>
+		Comment on Home Assistant Automations by Neil.B.Ennis		</title>
+		<link>/home-assistant-automations/comment-page-1/#comment-2442</link>
+
+		<dc:creator><![CDATA[Neil.B.Ennis]]></dc:creator>
+		<pubDate>Mon, 25 Aug 2025 23:51:44 +0000</pubDate>
+		<guid isPermaLink="false">/?p=559#comment-2442</guid>
+
+					<description><![CDATA[In reply to &lt;a href=&quot;/home-assistant-automations/comment-page-1/#comment-2441&quot;&gt;hauser&lt;/a&gt;.
+
+Hi
+
+Thanks for reading my article. 
+
+Congratulations on having such an impressive setup.
+
+The automations do what they are designed to do, but the downside was that the system required daily attention in order to work out what my &quot;buy&quot; and &quot;sell&quot; positions were for the day.  If I forgot to do this, it was easy to end up paying too much or having an empty battery.
+
+In answer to your question, you need to disable Smartshift if you enable HA Automations.  Otherwise the two things compete with each other, and you have no certainty about what will happen.
+
+I toyed with the NetZero app for a while, and found it useful because it was able to upload the actual Amber prices into the Tesla Utility Rate plan.  That&#039;s really handy.  My utility rate plan used to be manually set, which would make it impossible to dispatch to the grid outside of the times I had earmarked in my artificial prices.  That app used to be free, but I think you have to pay for it now.  Incidentally, NetZero played nicely with Smartshift, so it was possible to have both services enabled simultaneously.
+
+With regards to curtailment, we don&#039;t have that either, but I work around that by having a programmable switch on the hot water system.  If the FIT ever goes negative, I make sure the hot water switch is on.  If the FIT goes really negative, I manually intervene and take the house off-grid.  It&#039;s not ideal, but I don&#039;t know of an easier solution.
+
+
+I wrote some code to work out optimal buy and sell prices, but on cloudy days I ended up with buy prices higher than sell prices, which says to me that I got it wrong :)
+
+I&#039;m an I.T. professional by trade, and this is the first time in my life that errors in my code have an immediate and tangible cost to my hip pocket, which is quite alarming.
+
+In the end, I disabled the automations and let Amber Smartshift do its thing.  I decided their logic was better than mine, and I didn&#039;t want to have to worry about it every day.
+
+So far it has been good.  Our electricity bill has been in credit for the last 9 months, and the only days where we end up with mediocre results are on cold cloudy winter days - which are rare in Brisbane.
+
+Sorry I couldn&#039;t be more help.  I&#039;m not sure if I&#039;ve answered all your questions - if not, please let me know and I&#039;ll do what I can to help.]]></description>
+			<content:encoded><![CDATA[<p>In reply to <a href="/home-assistant-automations/comment-page-1/#comment-2441">hauser</a>.</p>
+<p>Hi</p>
+<p>Thanks for reading my article. </p>
+<p>Congratulations on having such an impressive setup.</p>
+<p>The automations do what they are designed to do, but the downside was that the system required daily attention in order to work out what my &#8220;buy&#8221; and &#8220;sell&#8221; positions were for the day.  If I forgot to do this, it was easy to end up paying too much or having an empty battery.</p>
+<p>In answer to your question, you need to disable Smartshift if you enable HA Automations.  Otherwise the two things compete with each other, and you have no certainty about what will happen.</p>
+<p>I toyed with the NetZero app for a while, and found it useful because it was able to upload the actual Amber prices into the Tesla Utility Rate plan.  That&#8217;s really handy.  My utility rate plan used to be manually set, which would make it impossible to dispatch to the grid outside of the times I had earmarked in my artificial prices.  That app used to be free, but I think you have to pay for it now.  Incidentally, NetZero played nicely with Smartshift, so it was possible to have both services enabled simultaneously.</p>
+<p>With regards to curtailment, we don&#8217;t have that either, but I work around that by having a programmable switch on the hot water system.  If the FIT ever goes negative, I make sure the hot water switch is on.  If the FIT goes really negative, I manually intervene and take the house off-grid.  It&#8217;s not ideal, but I don&#8217;t know of an easier solution.</p>
+<p>I wrote some code to work out optimal buy and sell prices, but on cloudy days I ended up with buy prices higher than sell prices, which says to me that I got it wrong 🙂</p>
+<p>I&#8217;m an I.T. professional by trade, and this is the first time in my life that errors in my code have an immediate and tangible cost to my hip pocket, which is quite alarming.</p>
+<p>In the end, I disabled the automations and let Amber Smartshift do its thing.  I decided their logic was better than mine, and I didn&#8217;t want to have to worry about it every day.</p>
+<p>So far it has been good.  Our electricity bill has been in credit for the last 9 months, and the only days where we end up with mediocre results are on cold cloudy winter days &#8211; which are rare in Brisbane.</p>
+<p>Sorry I couldn&#8217;t be more help.  I&#8217;m not sure if I&#8217;ve answered all your questions &#8211; if not, please let me know and I&#8217;ll do what I can to help.</p>
+]]></content:encoded>
+		
+			</item>
+		<item>
+		<title>
+		Comment on Home Assistant Automations by hauser		</title>
+		<link>/home-assistant-automations/comment-page-1/#comment-2441</link>
+
+		<dc:creator><![CDATA[hauser]]></dc:creator>
+		<pubDate>Mon, 25 Aug 2025 23:29:31 +0000</pubDate>
+		<guid isPermaLink="false">/?p=559#comment-2441</guid>
+
+					<description><![CDATA[Hi, thanks for publishing this. This is probably the most detailed post I have seen by someone automating beyond what Amber Smartshift offers. I have 3xPW2&#039;s, 3xSolarEdge Inverters for ~17 kw Solar  &#038; a Tesla EV as well and have recently re-joined Amber.
+
+I was curious to hear if you have been able to observe the results/track better ROI through this? Does having these automations in any way interfere with Amber&#039;s Smartshift? I.e can they co-exist together or do you have to disable it entirely? I was specifically interested in using their Solar Export Curtailment feature (esp in Summer)  as I no longer have the ability to do this myself on the SolarEdge inverters as they don&#039;t offer a free/local API. 
+
+I&#039;m planning to develop a similar automation as well, but use additional logic to also &#039;smart charge&#039; my EV when Feed-In Tariff is low/negative. Also, given my large PW2 capacity and limited peak household consumption, I want to take advantage of price spikes and force feed back a specific amount (eg 13.5 kwh) into grid. Looks like the ony way to manually force feed PW2 back to the grid is by setting up the tariff&#039;s in the Tesla app?]]></description>
+			<content:encoded><![CDATA[<p>Hi, thanks for publishing this. This is probably the most detailed post I have seen by someone automating beyond what Amber Smartshift offers. I have 3xPW2&#8217;s, 3xSolarEdge Inverters for ~17 kw Solar  &amp; a Tesla EV as well and have recently re-joined Amber.</p>
+<p>I was curious to hear if you have been able to observe the results/track better ROI through this? Does having these automations in any way interfere with Amber&#8217;s Smartshift? I.e can they co-exist together or do you have to disable it entirely? I was specifically interested in using their Solar Export Curtailment feature (esp in Summer)  as I no longer have the ability to do this myself on the SolarEdge inverters as they don&#8217;t offer a free/local API. </p>
+<p>I&#8217;m planning to develop a similar automation as well, but use additional logic to also &#8216;smart charge&#8217; my EV when Feed-In Tariff is low/negative. Also, given my large PW2 capacity and limited peak household consumption, I want to take advantage of price spikes and force feed back a specific amount (eg 13.5 kwh) into grid. Looks like the ony way to manually force feed PW2 back to the grid is by setting up the tariff&#8217;s in the Tesla app?</p>
+]]></content:encoded>
+		
+			</item>
+		<item>
+		<title>
+		Comment on DIY iGoogle Upgrade by NeilEnnis		</title>
+		<link>/diy-igoogle-upgrade/comment-page-1/#comment-395</link>
+
+		<dc:creator><![CDATA[NeilEnnis]]></dc:creator>
+		<pubDate>Tue, 21 Apr 2015 10:52:16 +0000</pubDate>
+		<guid isPermaLink="false">/?p=399#comment-395</guid>
+
+					<description><![CDATA[Hi René
+Sorry buit I only just saw this message.  Did you resolve the problem?
+With the latest version you can add RSS feeds via the &quot;Setup&quot; option at the top of the page, or add an &quot;rss&quot; widget in the myConfig.js file.
+Neil]]></description>
+			<content:encoded><![CDATA[<p>Hi René<br />
+Sorry buit I only just saw this message.  Did you resolve the problem?<br />
+With the latest version you can add RSS feeds via the &#8220;Setup&#8221; option at the top of the page, or add an &#8220;rss&#8221; widget in the myConfig.js file.<br />
+Neil</p>
+]]></content:encoded>
+		
+			</item>
+		<item>
+		<title>
+		Comment on ObSrv Bug Fix &#8211; Please read by NeilEnnis		</title>
+		<link>/obsrv-bug-fix-please-read/comment-page-1/#comment-394</link>
+
+		<dc:creator><![CDATA[NeilEnnis]]></dc:creator>
+		<pubDate>Tue, 21 Apr 2015 10:48:30 +0000</pubDate>
+		<guid isPermaLink="false">/?p=390#comment-394</guid>
+
+					<description><![CDATA[In reply to &lt;a href=&quot;/obsrv-bug-fix-please-read/comment-page-1/#comment-386&quot;&gt;Dave&lt;/a&gt;.
+
+Fixed :)]]></description>
+			<content:encoded><![CDATA[<p>In reply to <a href="/obsrv-bug-fix-please-read/comment-page-1/#comment-386">Dave</a>.</p>
+<p>Fixed 🙂</p>
+]]></content:encoded>
+		
+			</item>
+		<item>
+		<title>
+		Comment on ObSrv Bug Fix &#8211; Please read by Dave		</title>
+		<link>/obsrv-bug-fix-please-read/comment-page-1/#comment-386</link>
+
+		<dc:creator><![CDATA[Dave]]></dc:creator>
+		<pubDate>Fri, 20 Mar 2015 11:33:04 +0000</pubDate>
+		<guid isPermaLink="false">/?p=390#comment-386</guid>
+
+					<description><![CDATA[Server Error in &#039;/&#039; Application.
+Configuration Error
+Description: An error occurred during the processing of a configuration file required to service this request. Please review the specific error details below and modify your configuration file appropriately.
+
+Parser Error Message: Unrecognized attribute &#039;requestValidationMode&#039;. Note that attribute names are case-sensitive.
+
+Source Error:
+
+
+Line 206:          This section sets the run time settings of the application.
+Line 207:    --&#062;
+Line 208:    
+Line 209:  
+Line 210:  
+
+
+Source File: D:\hshome\c283142\obsrv.com\web.config    Line: 208
+
+Version Information: Microsoft .NET Framework Version:2.0.50727.3662; ASP.NET Version:2.0.50727.3658]]></description>
+			<content:encoded><![CDATA[<p>Server Error in &#8216;/&#8217; Application.<br />
+Configuration Error<br />
+Description: An error occurred during the processing of a configuration file required to service this request. Please review the specific error details below and modify your configuration file appropriately.</p>
+<p>Parser Error Message: Unrecognized attribute &#8216;requestValidationMode&#8217;. Note that attribute names are case-sensitive.</p>
+<p>Source Error:</p>
+<p>Line 206:          This section sets the run time settings of the application.<br />
+Line 207:    &#8211;&gt;<br />
+Line 208:<br />
+Line 209:<br />
+Line 210:  </p>
+<p>Source File: D:\hshome\c283142\obsrv.com\web.config    Line: 208</p>
+<p>Version Information: Microsoft .NET Framework Version:2.0.50727.3662; ASP.NET Version:2.0.50727.3658</p>
+]]></content:encoded>
+		
+			</item>
+		<item>
+		<title>
+		Comment on Getting an RSS feed from ANY site with images by marcus		</title>
+		<link>/obsrv-getting-an-rss-feed-from-any-site-with-images/comment-page-1/#comment-307</link>
+
+		<dc:creator><![CDATA[marcus]]></dc:creator>
+		<pubDate>Wed, 01 Oct 2014 19:34:30 +0000</pubDate>
+		<guid isPermaLink="false">/?p=29#comment-307</guid>
+
+					<description><![CDATA[The server is giving us errors...thank you]]></description>
+			<content:encoded><![CDATA[<p>The server is giving us errors&#8230;thank you</p>
+]]></content:encoded>
+		
+			</item>
+		<item>
+		<title>
+		Comment on DIY iGoogle Upgrade by René		</title>
+		<link>/diy-igoogle-upgrade/comment-page-1/#comment-235</link>
+
+		<dc:creator><![CDATA[René]]></dc:creator>
+		<pubDate>Sun, 04 May 2014 20:38:47 +0000</pubDate>
+		<guid isPermaLink="false">/?p=399#comment-235</guid>
+
+					<description><![CDATA[Hi Neil,
+
+I&#039;m still happily using my iGoogle replacement from you. But just now I run into a problem. Maybe you can help me with that:
+
+I wanted to implement a new RSS feed (http://www.deskeng.com/virtual_desktop/?feed=rss2). So I took the URL and copied it into this code snippet:
+
+&lt;!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Display a RSS widget from DeskEng
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - --&gt;
+startWidget(&#039;widNews&#039;, &#039;DeskEng&#039;, &#039;http://http://www.deskeng.com&#039;);
+new rssdisplayer(&quot;divNews&quot;, &quot;http://www.deskeng.com/virtual_desktop/?feed=rss2&quot;, 6, &quot;snippet&quot;);
+endWidget();
+
+But somehow it doesn&#039;t work. Something seems to be wrong with the URL?
+
+Thanks for your support again :)
+René]]></description>
+			<content:encoded><![CDATA[<p>Hi Neil,</p>
+<p>I&#8217;m still happily using my iGoogle replacement from you. But just now I run into a problem. Maybe you can help me with that:</p>
+<p>I wanted to implement a new RSS feed (<a href="http://www.deskeng.com/virtual_desktop/?feed=rss2" rel="nofollow ugc">http://www.deskeng.com/virtual_desktop/?feed=rss2</a>). So I took the URL and copied it into this code snippet:</p>
+<p><!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Display a RSS widget from DeskEng
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - --><br />
+startWidget(&#8216;widNews&#8217;, &#8216;DeskEng&#8217;, &#8216;http://http://www.deskeng.com&#8217;);<br />
+new rssdisplayer(&#8220;divNews&#8221;, &#8220;http://www.deskeng.com/virtual_desktop/?feed=rss2&#8221;, 6, &#8220;snippet&#8221;);<br />
+endWidget();</p>
+<p>But somehow it doesn&#8217;t work. Something seems to be wrong with the URL?</p>
+<p>Thanks for your support again 🙂<br />
+René</p>
+]]></content:encoded>
+		
+			</item>
+		<item>
+		<title>
+		Comment on Flickr RSS Feeds. Too big, too small by NeilEnnis		</title>
+		<link>/flickr-rss-feeds-too-big-too-small/comment-page-1/#comment-228</link>
+
+		<dc:creator><![CDATA[NeilEnnis]]></dc:creator>
+		<pubDate>Fri, 22 Jun 2012 00:02:54 +0000</pubDate>
+		<guid isPermaLink="false">/?p=280#comment-228</guid>
+
+					<description><![CDATA[Hi PC
+
+Thanks for bringing this to my attention.
+
+I&#039;ve fixed the problem.
+
+I had some scripts in my header that got lost when I upgraded my theme.  I had to put them back in the new header.
+
+Perhaps one day I&#039;ll make a plugin from all this stuff to save the hassle of manually adding back the scripts when I upgrade the theme.
+
+Neil]]></description>
+			<content:encoded><![CDATA[<p>Hi PC</p>
+<p>Thanks for bringing this to my attention.</p>
+<p>I&#8217;ve fixed the problem.</p>
+<p>I had some scripts in my header that got lost when I upgraded my theme.  I had to put them back in the new header.</p>
+<p>Perhaps one day I&#8217;ll make a plugin from all this stuff to save the hassle of manually adding back the scripts when I upgrade the theme.</p>
+<p>Neil</p>
+]]></content:encoded>
+		
+			</item>
+		<item>
+		<title>
+		Comment on Flickr RSS Feeds. Too big, too small by pc		</title>
+		<link>/flickr-rss-feeds-too-big-too-small/comment-page-1/#comment-227</link>
+
+		<dc:creator><![CDATA[pc]]></dc:creator>
+		<pubDate>Thu, 21 Jun 2012 10:27:06 +0000</pubDate>
+		<guid isPermaLink="false">/?p=280#comment-227</guid>
+
+					<description><![CDATA[Hmm is anyone else experiencing problems with the images on this 
+blog loading? I&#039;m trying to figure out if its a problem on my end or if it&#039;s the blog. Any responses would be greatly appreciated.]]></description>
+			<content:encoded><![CDATA[<p>Hmm is anyone else experiencing problems with the images on this<br />
+blog loading? I&#8217;m trying to figure out if its a problem on my end or if it&#8217;s the blog. Any responses would be greatly appreciated.</p>
+]]></content:encoded>
+		
+			</item>
+	</channel>
+</rss>

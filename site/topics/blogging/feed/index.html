@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Blogging &#8211; Technical Musings</title>
+	<atom:link href="/topics/blogging/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>The tech blog of Neil Ennis</description>
+	<lastBuildDate>Fri, 22 Jun 2012 00:04:14 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=6.9.10</generator>
+	<item>
+		<title>Flickr RSS Feeds. Too big, too small</title>
+		<link>/flickr-rss-feeds-too-big-too-small/</link>
+					<comments>/flickr-rss-feeds-too-big-too-small/#comments</comments>
+		
+		<dc:creator><![CDATA[Neil.B.Ennis]]></dc:creator>
+		<pubDate>Sun, 30 Aug 2009 02:04:19 +0000</pubDate>
+				<category><![CDATA[Blogging]]></category>
+		<category><![CDATA[RSS]]></category>
+		<category><![CDATA[Software]]></category>
+		<guid isPermaLink="false">/?p=280</guid>
+
+					<description><![CDATA[Loading&#8230; Loading&#8230; In this article about using slideshows in wordpress I showed you how to embed slideshows in WordPress blog&#8230; ]]></description>
+										<content:encoded><![CDATA[<style type="text/css">
+	.gss6 a img {border : none;} 
+	.gss6 { 
+		width : 300px; 
+		height : 230px; 
+		padding: 10px; 
+		cursor: hand;
+	} 
+</style>
+<style type="text/css">
+	.gss7 a img {border : none;} 
+	.gss7 { 
+		width : 300px; 
+		height : 230px; 
+		padding: 10px; 
+		cursor: hand;
+	} 
+</style>
+<p><script type="text/javascript">
+AddNewShow("http://api.flickr.com/services/feeds/groups_pool.gne?id=26241990@N00&#038;lang=en-us&#038;format=rss_200", "slideshow6");
+AddNewShow("http://blog.NeilEnnis.com/FlickrRSS.php?uri=http://api.flickr.com/services/feeds/groups_pool.gne?id=26241990@N00&#038;lang=en-us&#038;format=rss_200", "slideshow7");
+</script></p>
+<style type="text/css">
+	.alignleft { 
+		float: left; 
+		cursor: hand; 
+		border: none; 
+		margin-right: 15px; 
+		margin-bottom: 10px;
+} 
+</style>
+<div id="body6" class="alignleft">
+<div id="slideshow6" class="gss6">Loading&#8230;</div>
+</div>
+<div id="body7" class="alignleft">
+<div id="slideshow7" class="gss7">Loading&#8230;</div>
+</div>
+<p>In <a href="/index.php/slideshow-from-rss-for-wordpress/">this article about using slideshows in wordpress</a> I showed you how to embed slideshows in WordPress blog posts and sidebars using the Google Ajax Feed API.</p>
+<p>I prefer to use this facility to pull in Image feeds from Flickr.</p>
+<p>The problem with the images in these feeds is that they&#8217;re either too large or too small.</p>
+<p>The MediaRSS specification has a &lt;media:thumbnail&gt; tag which lets you have a thumbnail image in your feed.  That&#8217;s great, but the image size of the thumbnail is 75&#215;75 pixels, which is useless for a nice looking slideshow.  It ends up looking terribly blurry with no detail.</p>
+<p>The Google Ajax Feeds API tries to get around this by letting you specify a &#8220;thumbnailTag&#8221; in the slideshow options object.  Basically, you set this to &#8220;content&#8221; to tell the API to look for the image in the &#8220;content&#8221; section of the feed, rather than the &lt;media:thumnail&gt; section.  This is also great, but the problem is that Flickr uses the LARGE (or even worse, ORIGINAL) image size in this section.  So you get nice large detailed images in the feed, but they&#8217;re so large that they take ages to load, and your slideshow sits there for ages saying &#8220;Loading&#8230;.&#8221; while it grabs the huge images and chews up your audiences bandwidth.</p>
+<p>So I wrote a simple PHP screen scraping utility which grabs the Flickr feed, and changes the ImageUrl&#8230;_L.jpg  to ImageUrl&#8230;.M.jpg &#8211; in other words, it modifies the feed to include the medium size image rather than the large size.</p>
+<p>Medium sized images are fine for slideshows, and they load quite quickly.</p>
+<p>Here&#8217;s the PHP code:</p>
+<p><code><span style="color: #3366ff;">&lt;?php<br />
+date_default_timezone_set('UTC');<br />
+$uri="";<br />
+$first_var = "1";<br />
+foreach($_GET as $variable =&gt; $value)<br />
+{<br />
+if ($variable == 'uri')<br />
+{<br />
+$uri = $uri . $value;<br />
+}<br />
+else<br />
+{<br />
+$uri = $uri . "&amp;" . $variable . "=" . $value;<br />
+}<br />
+}<br />
+header("Content-Type: application/xml; charset=ISO-8859-1");<br />
+$ch = curl_init() or die(curl_error());<br />
+curl_setopt($ch, CURLOPT_URL,$uri);<br />
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);<br />
+$data1=curl_exec($ch) or die(curl_error());<br />
+$data1=str_replace("_s.jpg","_m.jpg",$data1);<br />
+$data1=str_replace('height="75"', "",$data1);<br />
+$data1=str_replace('width="75"', "",$data1);<br />
+echo $data1;<br />
+echo curl_error($ch);<br />
+curl_close($ch);<br />
+?&gt;</span></code></p>
+<p>Just save this in a file named FlickrRSS.php in the top folder of your wordpress directory.  Then instead of using your flickr RSS feed, pass the feed as a query parameter to the PHP utility.</p>
+<p>You&#8217;ll need to change the &amp;lt; and &amp;gt; tags in the file to &lt; and &gt;.</p>
+<p>So if your feed URL was this:<br />
+<a href="http://api.flickr.com/services/feeds/photos_public.gne?id=8575807@N07&amp;lang=en-us&amp;format=rss_200">http://api.flickr.com/services/feeds/photos_public.gne?id=YourFlickrUserNumberlang=en-us&amp;format=rss_200</a></p>
+<p>Use this instead<br />
+<a href="http://YourBlogUrl/FlickrRSS.php?uri">http://YourBlogUrl/FlickrRSS.php?uri</a>=<a href="http://api.flickr.com/services/feeds/photos_public.gne?id=8575807@N07&amp;lang=en-us&amp;format=rss_200">http://api.flickr.com/services/feeds/photos_public.gne?id=YourFlickrUserNumberlang=en-us&amp;format=rss_200</a></p>
+<p>This will change the &lt;media:thumbnail&gt; tag to point to the lager sized image, so your slideshows will load quickly, and look nicer <img src="https://s.w.org/images/core/emoji/17.0.2/72x72/1f642.png" alt="🙂" class="wp-smiley" style="height: 1em; max-height: 1em;" /></p>
+]]></content:encoded>
+					
+					<wfw:commentRss>/flickr-rss-feeds-too-big-too-small/feed/</wfw:commentRss>
+			<slash:comments>5</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>Slideshow from RSS for WordPress</title>
+		<link>/slideshow-from-rss-for-wordpress/</link>
+					<comments>/slideshow-from-rss-for-wordpress/#comments</comments>
+		
+		<dc:creator><![CDATA[Neil.B.Ennis]]></dc:creator>
+		<pubDate>Mon, 13 Jul 2009 01:56:50 +0000</pubDate>
+				<category><![CDATA[Blogging]]></category>
+		<category><![CDATA[RSS]]></category>
+		<category><![CDATA[Ajax]]></category>
+		<category><![CDATA[ObSrv]]></category>
+		<category><![CDATA[Wordpress]]></category>
+		<guid isPermaLink="false">/?p=68</guid>
+
+					<description><![CDATA[Loading&#8230; Loading&#8230; In this article about using slideshows in wordpress I showed you how to embed slideshows in WordPress blog&#8230; ]]></description>
+										<content:encoded><![CDATA[<style type="text/css">
+	.gss6 a img {border : none;} 
+	.gss6 { 
+		width : 300px; 
+		height : 230px; 
+		padding: 10px; 
+		cursor: hand;
+	} 
+</style>
+<style type="text/css">
+	.gss7 a img {border : none;} 
+	.gss7 { 
+		width : 300px; 
+		height : 230px; 
+		padding: 10px; 
+		cursor: hand;
+	} 
+</style>
+<p><script type="text/javascript">
+AddNewShow("http://api.flickr.com/services/feeds/groups_pool.gne?id=26241990@N00&#038;lang=en-us&#038;format=rss_200", "slideshow8");
+AddNewShow("http://blog.NeilEnnis.com/FlickrRSS.php?uri=http://api.flickr.com/services/feeds/groups_pool.gne?id=26241990@N00&#038;lang=en-us&#038;format=rss_200", "slideshow9");
+</script></p>
+<style type="text/css">
+	.alignleft { 
+		float: left; 
+		cursor: hand; 
+		border: none; 
+		margin-right: 15px; 
+		margin-bottom: 10px;
+} 
+</style>
+<div id="body8" class="alignleft">
+<div id="slideshow8" class="gss6">Loading&#8230;</div>
+</div>
+<div id="body9" class="alignleft">
+<div id="slideshow9" class="gss7">Loading&#8230;</div>
+</div>
+<p>In <a href="/index.php/slideshow-from-rss-for-wordpress/">this article about using slideshows in wordpress</a> I showed you how to embed slideshows in WordPress blog posts and sidebars using the Google Ajax Feed API.</p>
+<p>I prefer to use this facility to pull in Image feeds from Flickr.</p>
+<p>The problem with the images in these feeds is that they&#8217;re either too large or too small.</p>
+<p>The MediaRSS specification has a &lt;media:thumbnail&gt; tag which lets you have a thumbnail image in your feed.  That&#8217;s great, but the image size of the thumbnail is 75&#215;75 pixels, which is useless for a nice looking slideshow.  It ends up looking terribly blurry with no detail.</p>
+<p>The Google Ajax Feeds API tries to get around this by letting you specify a &#8220;thumbnailTag&#8221; in the slideshow options object.  Basically, you set this to &#8220;content&#8221; to tell the API to look for the image in the &#8220;content&#8221; section of the feed, rather than the &lt;media:thumnail&gt; section.  This is also great, but the problem is that Flickr uses the LARGE (or even worse, ORIGINAL) image size in this section.  So you get nice large detailed images in the feed, but they&#8217;re so large that they take ages to load, and your slideshow sits there for ages saying &#8220;Loading&#8230;.&#8221; while it grabs the huge images and chews up your audiences bandwidth.</p>
+<p>So I wrote a simple PHP screen scraping utility which grabs the Flickr feed, and changes the ImageUrl&#8230;_L.jpg  to ImageUrl&#8230;.M.jpg &#8211; in other words, it modifies the feed to include the medium size image rather than the large size.</p>
+<p>Medium sized images are fine for slideshows, and they load quite quickly.</p>
+<p>Here&#8217;s the PHP code:</p>
+<p><code><span style="color: #3366ff;">&lt;?php<br />
+date_default_timezone_set('UTC');<br />
+$uri="";<br />
+$first_var = "1";<br />
+foreach($_GET as $variable =&gt; $value)<br />
+{<br />
+if ($variable == 'uri')<br />
+{<br />
+$uri = $uri . $value;<br />
+}<br />
+else<br />
+{<br />
+$uri = $uri . "&amp;" . $variable . "=" . $value;<br />
+}<br />
+}<br />
+header("Content-Type: application/xml; charset=ISO-8859-1");<br />
+$ch = curl_init() or die(curl_error());<br />
+curl_setopt($ch, CURLOPT_URL,$uri);<br />
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);<br />
+$data1=curl_exec($ch) or die(curl_error());<br />
+$data1=str_replace("_s.jpg","_m.jpg",$data1);<br />
+$data1=str_replace('height="75"', "",$data1);<br />
+$data1=str_replace('width="75"', "",$data1);<br />
+echo $data1;<br />
+echo curl_error($ch);<br />
+curl_close($ch);<br />
+?&gt;</span></code></p>
+<p>Just save this in a file named FlickrRSS.php in the top folder of your wordpress directory.  Then instead of using your flickr RSS feed, pass the feed as a query parameter to the PHP utility.</p>
+<p>You&#8217;ll need to change the &amp;lt; and &amp;gt; tags in the file to &lt; and &gt;.</p>
+<p>So if your feed URL was this:<br />
+<a href="http://api.flickr.com/services/feeds/photos_public.gne?id=8575807@N07&amp;lang=en-us&amp;format=rss_200">http://api.flickr.com/services/feeds/photos_public.gne?id=YourFlickrUserNumberlang=en-us&amp;format=rss_200</a></p>
+<p>Use this instead<br />
+<a href="http://YourBlogUrl/FlickrRSS.php?uri">http://YourBlogUrl/FlickrRSS.php?uri</a>=<a href="http://api.flickr.com/services/feeds/photos_public.gne?id=8575807@N07&amp;lang=en-us&amp;format=rss_200">http://api.flickr.com/services/feeds/photos_public.gne?id=YourFlickrUserNumberlang=en-us&amp;format=rss_200</a></p>
+<p>This will change the &lt;media:thumbnail&gt; tag to point to the lager sized image, so your slideshows will load quickly, and look nicer <img src="https://s.w.org/images/core/emoji/17.0.2/72x72/1f642.png" alt="🙂" class="wp-smiley" style="height: 1em; max-height: 1em;" /></p>
+]]></content:encoded>
+					
+					<wfw:commentRss>/slideshow-from-rss-for-wordpress/feed/</wfw:commentRss>
+			<slash:comments>2</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>Welcome to the new TechMusings Blog</title>
+		<link>/welcome-to-the-new-techmusings-blog/</link>
+					<comments>/welcome-to-the-new-techmusings-blog/#respond</comments>
+		
+		<dc:creator><![CDATA[Neil.B.Ennis]]></dc:creator>
+		<pubDate>Sun, 12 Jul 2009 03:05:50 +0000</pubDate>
+				<category><![CDATA[Blogging]]></category>
+		<category><![CDATA[Blogger]]></category>
+		<category><![CDATA[Wordpress]]></category>
+		<guid isPermaLink="false">/?p=66</guid>
+
+					<description><![CDATA[I recently moved this blog from Blogger to WordPress. The old blog was at http://techmusings.blogspot.com I&#8217;m still trying to come&#8230; ]]></description>
+										<content:encoded><![CDATA[<p>I recently moved this blog from Blogger to WordPress.</p>
+<p>The old blog was at <a href="http://techmusings.blogspot.com" target="_blank">http://techmusings.blogspot.com</a></p>
+<p>I&#8217;m still trying to come to grips with WordPress.  Somethings in Blogger were much easier (such as slideshows), but I think WordPress looks much nicer.</p>
+<p>Please let me know what you think, and if you&#8217;ve got some suggestions, I&#8217;d really like to hear them.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>/welcome-to-the-new-techmusings-blog/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>Using Twitter</title>
+		<link>/using-twitter/</link>
+					<comments>/using-twitter/#comments</comments>
+		
+		<dc:creator><![CDATA[Neil.B.Ennis]]></dc:creator>
+		<pubDate>Wed, 20 May 2009 23:14:00 +0000</pubDate>
+				<category><![CDATA[Blogging]]></category>
+		<category><![CDATA[Twitter]]></category>
+		<guid isPermaLink="false">/?p=33</guid>
+
+					<description><![CDATA[A few friends have asked me to explain twitter. Rather that re-invent the wheel, I thought I&#8217;d upload a few&#8230; ]]></description>
+										<content:encoded><![CDATA[<p>A few friends have asked me to explain twitter.</p>
+<p>Rather that re-invent the wheel, I thought I&#8217;d upload a few links that explain what it&#8217;s all about.</p>
+<p>1. <a href="http://twitter.zendesk.com/forums/10711/entries">The official Twitter Help Resources / Getting Started</a></p>
+<p>2. <a href="http://www.fourhourworkweek.com/blog/2009/02/25/how-to-use-twitter-without-twitter-owning-you-5-tips/">How to Use Twitter Without Twitter Owning You &#8211; 5 Tips</a> (Tim Ferriss)</p>
+<p>3. <a href="http://www.mahalo.com/How_to_Use_Twitter">How to Use Twitter</a> (Darcy Logan, includes great short video)</p>
+<p>4. <a href="http://news.cnet.com/newbies-guide-to-twitter/">Newbie&#8217;s guide to Twitter</a></p>
+<p>5. <a href="http://twitter.pbworks.com/">Twitter Fan Wiki</a> (Sort of like Wikipedia for Twitter)</p>
+<p>6 <a href="http://twitter.pbworks.com/Hashtags">HashTags</a></p>
+<p>Actually HashTags deserve a post all of their own.  I&#8217;ll post something about that later.  </p>
+<p>I hope these links help.  The bottom line for Twitter I think is to follow people who have something interesting to say.  Don&#8217;t just follow anyone, because then the interesting comments will get drowned out with &#8220;noise&#8221;.</p>
+<p>And the converse is that it&#8217;s important make your posts useful.  Say stuff that will be interesting to people who follow you.  Here&#8217;s some examples of people who post some really great twitter articles:</p>
+<p><a href="http://twitter.com/Astro_Mike/">@Astro_Mike</a> An Austronoaut tweeting from orbit<br /><a href="http://twitter.com/tferriss/">@tferriss</a> Author and blogger on lifestyle design<br /><a href="http://twitter.com/612brisbane/">@612brisbane</a>My local ABC radio station</p>
+<p>Oh, and if you&#8217;re interested, I&#8217;m on twitter as <a href="http://twitter.com/NeilEnnis">@NeilEnnis</a></p>
+]]></content:encoded>
+					
+					<wfw:commentRss>/using-twitter/feed/</wfw:commentRss>
+			<slash:comments>1</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>Watching the World</title>
+		<link>/obsrv-watching-the-world/</link>
+					<comments>/obsrv-watching-the-world/#respond</comments>
+		
+		<dc:creator><![CDATA[Neil.B.Ennis]]></dc:creator>
+		<pubDate>Sun, 25 Jan 2009 02:14:00 +0000</pubDate>
+				<category><![CDATA[Blogging]]></category>
+		<category><![CDATA[ObSrv]]></category>
+		<category><![CDATA[RSS]]></category>
+		<guid isPermaLink="false">/?p=27</guid>
+
+					<description><![CDATA[I&#8217;ve just completed a project called &#8220;ObSrv&#8221; which will convert Google Image Searches into MediaRSS compliant RSS feeds. If you&#8230; ]]></description>
+										<content:encoded><![CDATA[<p><a href="http://obsrv.com/"><img decoding="async" style="FLOAT: right; MARGIN: 0px 0px 10px 10px; WIDTH: 333px; CURSOR: hand; HEIGHT: 150px" alt="" src="http://obsrv.com/Images/ObsrvBanner1.jpg" border="0" /></a>I&#8217;ve just completed a project called &#8220;<a href="http://obsrv.com/" target="_blank">ObSrv</a>&#8221; which will convert Google Image Searches into MediaRSS compliant RSS feeds.</p>
+<p>If you don&#8217;t know what an RSS feed is, perhaps you should read <a href="http://en.wikipedia.org/wiki/Rss" target="_blank">this</a>, or <a href="http://rss.softwaregarden.com/aboutrss.html">this</a>. I love RSS because it&#8217;s an easy way to let other people know what you&#8217;re doing, and to find out news that is of specific interest to you. This blog (like almost all others) has an RSS feed. Most news sites and picture sharing sites have RSS too. This makes it easy for you to show their content on your website, or to view their content in an RSS reader.</p>
+<p>If you don&#8217;t know what MediaRSS is, you might want to read <a href="http://search.yahoo.com/mrss" target="_blank">the specification</a>. Basically, it&#8217;s for a special type of RSS feed that contains media, such as pictures, video, and music. These feeds are cool because pictures, videos and music are much more entertaining than plain text. You can do more with them. For example, there&#8217;s a slideshow on the right hand side of this blog that updates every few seconds with pictures of hi-tech gizmos. It&#8217;s based on a Media RSS feed.</p>
+<p>My favourite Media RSS application is <a href="http://www.johnsadventures.com/software/backgroundswitcher/" target="_blank">John&#8217;s Background Switcher</a>. It updates the wallpaper on your computer desktop with pictures from a Media RSS feed.</p>
+<p>My only problem with Media RSS is that the biggest source of images on the web (<a href="http://images.google.com/" target="_blank">Google Images</a>) doesn&#8217;t serve up their image searches as an RSS feed. Which means that while you can search for images at google, you can&#8217;t automatically feed them into a media RSS application.</p>
+<p>That&#8217;s where ObSrv comes in. It converts a Google Image search into a Media RSS feed.</p>
+<p>Here&#8217;s how:</p>
+<ol>
+<li>Go to <a href="http://obsrv.com/" target="_blank">http://obsrv.com/</a> </li>
+<p></p>
+<li>Type a few search words in the box. (Hint. If you want, do an advanced search in Google Images, and copy the Google Images URL into the box instead).<br /><img decoding="async" id="BLOGGER_PHOTO_ID_5295054184119835938" style="WIDTH: 320px; HEIGHT: 199px" alt="" src="http://3.bp.blogspot.com/_N2feXO3-_yM/SXvPud7onSI/AAAAAAAAAT0/lGhyk8LFAOE/s320/ObSrvScreenDump.jpg" border="0" /></li>
+<li>Press ENTER or click on the &#8220;GO&#8221; button.</li>
+<p></p>
+<li>ObSrv will give you the link to your feed.<br /><img decoding="async" id="BLOGGER_PHOTO_ID_5295055168790469026" style="WIDTH: 320px; HEIGHT: 46px" alt="" src="http://3.bp.blogspot.com/_N2feXO3-_yM/SXvQnyHaGaI/AAAAAAAAAT8/PU5qrLmD4Nk/s320/ObSrvScreenDump2.jpg" border="0" /></li>
+<p></p>
+<li>Click on the link to open the feed in a new window, or copy the URL for the feed from the textbox.</li>
+</ol>
+<p>Here&#8217;s some links to some applications that you can use with RSS Image Feeds:</p>
+<p><a href="http://www.johnsadventures.com/software/backgroundswitcher/" target="_blank">John&#8217;s Background Switcher</a> (Windows desktop background switcher)</p>
+<p><a href="http://www.vuvox.com/express">Vuvox</a> (Slideshows)</p>
+<p><a href="http://www.feedreader.com/">Feed Reader</a> </p>
+<p><a href="http://www.paradisoft.com/rsspopper/rsspopper.asp">RSS Popper</a></p>
+<p><strong>What&#8217;s Next?</strong></p>
+<p>I&#8217;ll be adding functionality to ObSrv as time permits. My next task is to get it to convert any webpage containing images into an RSS Image Feed.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>/obsrv-watching-the-world/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>Schizophreinc Blogs!</title>
+		<link>/schizophreinc-blogs/</link>
+					<comments>/schizophreinc-blogs/#respond</comments>
+		
+		<dc:creator><![CDATA[Neil.B.Ennis]]></dc:creator>
+		<pubDate>Mon, 01 Sep 2008 11:37:00 +0000</pubDate>
+				<category><![CDATA[Blogging]]></category>
+		<guid isPermaLink="false">/?p=25</guid>
+
+					<description><![CDATA[I have a schizophrenic blog. Some days I upload copies of postcards that I receive. Other days it&#8217;s info about&#8230; ]]></description>
+										<content:encoded><![CDATA[<p>I have a schizophrenic blog.  Some days I upload copies of postcards that I receive.  Other days it&#8217;s info about migration to Australia in the 60&#8217;s.  And then it might be some photos of family and friends.</p>
+<p>So it&#8217;s a bit of a mixed bag.</p>
+<p>Which is fine by me.  My attention gets pulled all over the place, and I get interested in lots of different things.  A bit like Homer Simpson walking through a shopping mall <img src="https://s.w.org/images/core/emoji/17.0.2/72x72/1f642.png" alt="🙂" class="wp-smiley" style="height: 1em; max-height: 1em;" /></p>
+<p>But it could make life hard for my readers, so I recently added a little Javascript widget that makes the blog change its appearance depending on what interests you.  Coupled with judicious use of blogger labels, it works wonders.</p>
+<p>It&#8217;s the same blog, but it changes shape depending on how you get to it.</p>
+<p><a href="http://neilius.blogspot.com/search/label/Postcards?pcd=1" target="_blank"><img decoding="async" style="cursor:pointer; cursor:hand;" src="http://3.bp.blogspot.com/_N2feXO3-_yM/SLx3mHDAkcI/AAAAAAAAAMM/om4wtU9BQMo/s200/Postcard+Example.jpg" border="0" alt=""id="BLOGGER_PHOTO_ID_5241195562962817474" /></a><a href="http://neilius.blogspot.com/search/label/Ten%20Pound%20Poms?tpp=1" target="_blank"><img decoding="async" style="cursor:pointer; cursor:hand;" src="http://1.bp.blogspot.com/_N2feXO3-_yM/SLx3makVYxI/AAAAAAAAAMU/f7XXxsrboPE/s200/TPP+Example.jpg" border="0" alt=""id="BLOGGER_PHOTO_ID_5241195568202867474" /></a></p>
+<p>Have a look at these two different links to see what I mean.</p>
+<p>First if you&#8217;re interested in <a href="http://neilius.blogspot.com/search/label/Postcards?pcd=1" target="_blank">Postcards</a> go to the blog via the URL: http://neilius.blogspot.com/search/label/Postcards?pcd=1.</p>
+<p>Second if you&#8217;re interested in <a href="http://neilius.blogspot.com/search/label/Ten%20Pound%20Poms?tpp=1" target="_blank">Ten Pound Poms</a> go to the blog via the URL: http://neilius.blogspot.com/search/label/Ten%20Pound%20Poms?tpp=1. </p>
+<p>(Hint for the uninitiated &#8220;Ten Pound Poms&#8221; were migrants who came to Australia from Britain between 1950 and 1971).</p>
+<p>There are two cool bits to this.  </p>
+<p>The first is that you get a totally different set of links at the top of the blog depending on how you view it.  I do this by adding some query string parameters to the URL.  (The &#8220;?pcd=1&#8221; or &#8220;?tpp=1&#8221; parts of the URL).</p>
+<p>Secondly, using labels in the URL lets me control what articles appear when you visit.  (That&#8217;s what the &#8220;/search/label/&#8230;&#8221; bit of the URL is all about).  </p>
+<p>You might think using query strings on your URL is a messy way to get to your blog.  But it&#8217;s really easy to set up a domain and (using something like ZoneEdit&#8217;s &#8220;webforward&#8221;) point that domain to a more complex URL.  </p>
+<p>For example, <a href="http://TenPoundPoms.com">http://TenPoundPoms.com</a> and <a href="http://Postcards.NeilEnnis.com">http://Postcards.NeilEnnis.com</a> both point to the same blog, but I&#8217;ve used ZoneEdit to add different parameters to the URL query string.</p>
+<p>A small Javascript widget at the top of the blog looks at the query string, and decides what sort of links to display.  Basically it&#8217;s saying &#8220;If you&#8217;ve come here to look at postcards, I&#8217;ll show you some postcard links.  But if you&#8217;re interested in Ten Pound Poms, then I&#8217;ll show you some different links instead.</p>
+<p>Here&#8217;s the code.  The <span style="color:orange">Orange</span> section is a javascript function to pull the query parameter out of a url.  The <span style="color:green">Green</span> section controls what gets displayed when people are interested in &#8220;Ten Pound Poms&#8221;.  The <span style="color:blue">Blue</span> section is what gets displayed when people are interested in &#8220;Postcards&#8221;.</p>
+<p><span style="font-size: 8pt; font-family: Courier New"><span style="color:orange"><br />&lt;script&gt;<br />function gup( name ){  name = name.replace(/[\[]/,&#8221;\\\[&#8220;).replace(/[\]]/,&#8221;\\\]&#8221;);  var regexS = &#8220;[\\?&#038;]&#8221;+name+&#8221;=([^&#038;#]*)&#8221;;  var regex = new RegExp( regexS );  var results = regex.exec( window.location.href );  if( results == null )    return &#8220;&#8221;;  else    return results[1];}<br />&lt;/script&gt;</span><br />&lt;script&gt;<br />var tpp_param = gup( &#8216;tpp&#8217; );<br />var pcd_param = gup( &#8216;pcd&#8217; );<br />if(window.location.href == &#8216;http://neilius.blogspot.com/search/label/Ten%20Pound%20Poms&#8217;)<br />&nbsp; &nbsp; &nbsp; tpp_param = &#8216;1&#8217;;<br />if(window.location.href == &#8216;http://neilius.blogspot.com/search/label/Postcards&#8217;)<br />&nbsp; &nbsp; &nbsp; pcd_param = &#8216;1&#8217;;<span style="color:green"><br />if(tpp_param == &#8216;1&#8217;)<br />{<br />&nbsp; &nbsp; &nbsp; document.write(&#8216;&lt;div id=&#8221;tpp-info&#8221; class=&#8221;sidebar section&#8221;&gt;&#8217;);<br />&nbsp; &nbsp; &nbsp; document.write(&#8216;&lt;h2 class=&#8221;title&#8221;&gt;Ten Pound Poms&lt;/h2&gt;&#8217;);<br />&nbsp; &nbsp; &nbsp; document.write(&#8216;&lt;a href=&#8221;http://neilius.blogspot.com/search/label/Ten%20Pound%20Poms?tpp=1&#8243;&gt;Home&lt;/a&gt; Ten Pound Poms  |  &#8216;);<br />&nbsp; &nbsp; &nbsp; document.write(&#8216;&lt;a href=&#8221;http://neilius.blogspot.com/2008/07/about-tenpoundpomscom.html?tpp=1&#8243;&gt;About&lt;/a&gt; Ten Pound Poms  |  &#8216;);<br />&nbsp; &nbsp; &nbsp; document.write(&#8216;&lt;a href=&#8221;http://neilius.blogspot.com/2008/08/links-for-ten-pound-poms.html?tpp=1&#8243;&gt;Links&lt;/a&gt; for Ten Pound Poms&lt;br/&gt;&#8217;);<br />&nbsp; &nbsp; &nbsp; document.write(&#8216;&lt;a href=&#8221;http://neilius.blogspot.com/2008/08/migrant-ships.html?tpp=1&#8243;&gt;Migrant Ships&lt;/a&gt; &#8211; How we got here&lt;br/&gt;&#8217;);<br />&nbsp; &nbsp; &nbsp; document.write(&#8216;&lt;a href=&#8221;http://neilius.blogspot.com&#8221;&gt;Musings&lt;/a&gt; &#8211; Back to the main blog&#8217;);<br />&nbsp; &nbsp; &nbsp; document.write(&#8216;&lt;/div&gt;&#8217;);<br />}</span><span style="color:blue"><br />else if(pcd_param == &#8216;1&#8217;)<br />{<br />&nbsp; &nbsp; &nbsp; document.write(&#8216;&lt;div id=&#8221;pcd-info&#8221; class=&#8221;sidebar section&#8221;&gt;&#8217;);<br />&nbsp; &nbsp; &nbsp; document.write(&#8216;&lt;h2 class=&#8221;title&#8221;&gt;My Postcards&lt;/h2&gt;&#8217;);<br />&nbsp; &nbsp; &nbsp; document.write(&#8216;&lt;a href=&#8221;http://neilius.blogspot.com/search/label/Postcards?pcd=1&#8243;&gt;Home&lt;/a&gt; &#8211; My Postcard Blog  |  &#8216;);<br />&nbsp; &nbsp; &nbsp; document.write(&#8216;&lt;a href=&#8221;http://neilius.blogspot.com/2008/05/about-my-postcards.html?pcd=1&#8243;&gt;About&lt;/a&gt; My Postcards  |  &#8216;);<br />&nbsp; &nbsp; &nbsp; document.write(&#8216;My Postcrossing &lt;a href=&#8221;http://www.postcrossing.com/user/Neilius&#8221; target=&#8221;_blank&#8221;&gt;Profile&lt;/a&gt;&lt;br/&gt;&#8217;);<br />&nbsp; &nbsp; &nbsp; document.write(&#8216;&lt;a href=&#8221;http://postcrossing.com&#8221; target=&#8221;_blank&#8221;&gt;Postcrossing&lt;/a&gt; &#8211; A great way to send and receive postcards&lt;br/&gt;&#8217;);<br />&nbsp; &nbsp; &nbsp; document.write(&#8216;&lt;a href=&#8221;http://flickr.com/photos/magictyger/sets/72157604961465429/&#8221; target=&#8221;_blank&#8221;&gt;Postcard Collection&lt;/a&gt; at Flickr&lt;br/&gt;&#8217;);<br />&nbsp; &nbsp; &nbsp; document.write(&#8216;&lt;a href=&#8221;http://neilius.blogspot.com&#8221;&gt;Musings&lt;/a&gt; &#8211; Back to the main blog&#8217;);<br />&nbsp; &nbsp; &nbsp; document.write(&#8216;&lt;/div&gt;&#8217;);<br />}</span><br />&lt;/script&gt;<br /></span></p>
+]]></content:encoded>
+					
+					<wfw:commentRss>/schizophreinc-blogs/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>BuzzNet to Blogger woes</title>
+		<link>/buzznet-to-blogger-woes/</link>
+					<comments>/buzznet-to-blogger-woes/#respond</comments>
+		
+		<dc:creator><![CDATA[Neil.B.Ennis]]></dc:creator>
+		<pubDate>Wed, 30 May 2007 23:55:00 +0000</pubDate>
+				<category><![CDATA[Blogging]]></category>
+		<guid isPermaLink="false">/?p=19</guid>
+
+					<description><![CDATA[There was a cool feature at BuzzNet.com. It let you email a photo to a secret email address and would&#8230; ]]></description>
+										<content:encoded><![CDATA[<p>There was a cool feature at BuzzNet.com.  It let you email a photo to a secret email address and would then create a blog entry at BuzzNet from the email.  Really handy when you were on the road, had some nice photos, and wanted to upload them quickly without stuffing around with URL&#8217;s and HTML image references and crap like that.</p>
+<p>What was also nice was the BlogThis! facility that let you convert the new BuzzNet entry into a Blog Entry here at Blogger.</p>
+<p>After I upgraded to Blogger&#8217;s new gmail accounts, I was unable to use the BlogThis! facility at BuzzNet.</p>
+<p>I&#8217;ve been stuffing around with this for ages, and every time I tried to get BuzzNet to talk to Blogger I got errors, and it wouldn&#8217;t retrieve a list of Blogs.</p>
+<p>Eventually I gave up in disgust and tried Flickr.Com.</p>
+<p>It works!  Perfectly!  Easily!</p>
+<p>I created a new Flickr account, told it that I had a Blogger account, and it directed me to a page at Google which let me authorize Flickr to update my blog.</p>
+<p>Now I can email a photo to a Flickr address, and it automatically creates a new Blog entry for me.</p>
+<p>Next time I go on a cruise, I&#8217;m all set to upload my new photos every day without spending hours trying to figure out all the HTML references.</p>
+<p>I am a very happy camper.  If anyone else has this problem with Buzznet &#8211; forget them &#8211; just upgrade to Flickr and make your life easier.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>/buzznet-to-blogger-woes/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>Republish info from a web site</title>
+		<link>/republish-info-from-a-web-site/</link>
+					<comments>/republish-info-from-a-web-site/#respond</comments>
+		
+		<dc:creator><![CDATA[Neil.B.Ennis]]></dc:creator>
+		<pubDate>Sat, 19 Feb 2005 08:31:00 +0000</pubDate>
+				<category><![CDATA[Blogging]]></category>
+		<category><![CDATA[Software]]></category>
+		<category><![CDATA[ASP.Net]]></category>
+		<guid isPermaLink="false">/?p=6</guid>
+
+					<description><![CDATA[It&#8217;s really easy in .NET to output your own censored / transformed version of another web page. Here&#8217;s a code&#8230; ]]></description>
+										<content:encoded><![CDATA[<p>It&#8217;s really easy in .NET to output your own censored / transformed version of another web page.</p>
+<p>Here&#8217;s a code snippet which reads the contents of one web site, does some changes it, and re-publishes it on your own web site.</p>
+<p>Make sure strURL has the &#8220;http://&#8221; at the front of it, and be sure to take acount of the fact that any relative references in the source web will still be relative in the target web.</p>
+<p>Dim objRequest As WebRequest = System.Net.HttpWebRequest.Create(strURL)</p>
+<p>Dim objResponse As WebResponse = objRequest.GetResponse()</p>
+<p>Dim sr As StreamReader = New StreamReader(objResponse.GetResponseStream())</p>
+<p>Response.Write(Page, SomeTransformationOf(sr.ReadToEnd()))</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>/republish-info-from-a-web-site/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>What the?</title>
+		<link>/what-the/</link>
+					<comments>/what-the/#respond</comments>
+		
+		<dc:creator><![CDATA[Neil.B.Ennis]]></dc:creator>
+		<pubDate>Sat, 19 Feb 2005 03:02:00 +0000</pubDate>
+				<category><![CDATA[Blogging]]></category>
+		<guid isPermaLink="false">/?p=5</guid>
+
+					<description><![CDATA[Tech Musings is a collection of technical thoughts and ideas by Neil]]></description>
+										<content:encoded><![CDATA[<p>Tech Musings is a collection of technical thoughts and ideas by Neil</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>/what-the/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+	</channel>
+</rss>

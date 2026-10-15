@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Mathematics &#8211; Technical Musings</title>
+	<atom:link href="/tag/mathematics/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>The tech blog of Neil Ennis</description>
+	<lastBuildDate>Mon, 13 Jul 2009 23:08:40 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=6.9.10</generator>
+	<item>
+		<title>More algebra</title>
+		<link>/more-algebra/</link>
+					<comments>/more-algebra/#respond</comments>
+		
+		<dc:creator><![CDATA[Neil.B.Ennis]]></dc:creator>
+		<pubDate>Wed, 02 Jul 2008 01:10:00 +0000</pubDate>
+				<category><![CDATA[Mathematics]]></category>
+		<guid isPermaLink="false">/?p=24</guid>
+
+					<description><![CDATA[A couple of years ago, in this post I published the formula for calculating loan repayments based on rate, PV,&#8230; ]]></description>
+										<content:encoded><![CDATA[<p>A couple of years ago, in <a href="http://techmusings.blogspot.com/2005/03/loan-repayment-calculations-and-high.html">this post</a> I published the formula for calculating loan repayments based on rate, PV, FV and interest rates etc.</p>
+<p>I mistakenly said that you couldn&#8217;t arrange the formula to give an expression which would calculate the TERM given the other values.</p>
+<p>I was wrong.</p>
+<p>Here&#8217;s the formula:<br />NPER = LOG((PMT*(1+RATE*TYPE) &#8211; RATE * FV) / (PMT*(1+RATE*TYPE) + @RATE*PV)) / LOG(1+RATE)</p>
+<p>FV is the &#8220;Future Value&#8221; of an investment assuming an initial investment (PV), constant repayments (PMT) and a constant interest rate (RATE) over a fixed term of months (NPER). When &#8220;TYPE&#8221; is zero, loan repayments are made in advance. When &#8220;TYPE&#8221; is 1, loan repayments are made in arrears.</p>
+<p>It yields a non-integer result.  The result should be rounded up to the next highest integer, with the value of the final repayment reduced.</p>
+<p>If I get time I&#8217;ll post a formula for the final repayment later.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>/more-algebra/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>Loan repayment calculations and high school algebra</title>
+		<link>/loan-repayment-calculations-and-high-school-algebra/</link>
+					<comments>/loan-repayment-calculations-and-high-school-algebra/#comments</comments>
+		
+		<dc:creator><![CDATA[Neil.B.Ennis]]></dc:creator>
+		<pubDate>Sat, 12 Mar 2005 07:37:00 +0000</pubDate>
+				<category><![CDATA[Mathematics]]></category>
+		<guid isPermaLink="false">/?p=9</guid>
+
+					<description><![CDATA[FV = (PMT*(1+RATE*TYPE)*(1-(1+RATE)^NPER)/RATE) &#8211; PV*(1+RATE)^NPER This is the formula for the &#8220;Future Value&#8221; (FV) of an investment assuming an initial&#8230; ]]></description>
+										<content:encoded><![CDATA[<p>FV = (PMT*(1+RATE*TYPE)*(1-(1+RATE)^NPER)/RATE) &#8211; PV*(1+RATE)^NPER</p>
+<p>This is the formula for the &#8220;Future Value&#8221; (FV) of an investment assuming an initial investment (PV), constant repayments (PMT) and a constant interest rate (RATE) over a fixed term of months (NPER). When &#8220;TYPE&#8221; is zero, loan repayments are made in advance. When &#8220;TYPE&#8221; is 1, loan repayments are made in arrears.</p>
+<p>You can algebraically rearrange the formula to give an expression that calculates PMT.</p>
+<p>You can also rearrange the formula to give an expression that calculates PV.</p>
+<p>Both of these just require simple high-school algebra.</p>
+<p>But you CAN&#8217;T rearrange the formula to give an expresion that calculates RATE or NPER.</p>
+<p>To work out these figures, you have to use an iterative method where you &#8220;plug in&#8221; a guess of what you think the rate or period should be, evaulate the result, and adjust your guess accordingly.</p>
+<p>If you use some smart iterative methods, you should only have to loop about 5 times. The simplest way is given two guess / result pairs (x1, y1) and (x2, y2), and wanting to find the &#8220;x&#8221; which will result in &#8220;y&#8221;, your next best guess is to try x = y*(x1-x2)/(y1-y2).</p>
+<p>In subsequent iterations, discard the (x,y) pair furthest from the desired result, and repeat the process with the new results.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>/loan-repayment-calculations-and-high-school-algebra/feed/</wfw:commentRss>
+			<slash:comments>1</slash:comments>
+		
+		
+			</item>
+	</channel>
+</rss>

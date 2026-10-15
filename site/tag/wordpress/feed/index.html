@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Wordpress &#8211; Technical Musings</title>
+	<atom:link href="/tag/wordpress/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>The tech blog of Neil Ennis</description>
+	<lastBuildDate>Fri, 22 Jun 2012 00:00:51 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=6.9.10</generator>
+	<item>
+		<title>Slideshow from RSS for WordPress</title>
+		<link>/slideshow-from-rss-for-wordpress/</link>
+					<comments>/slideshow-from-rss-for-wordpress/#comments</comments>
+		
+		<dc:creator><![CDATA[Neil.B.Ennis]]></dc:creator>
+		<pubDate>Mon, 13 Jul 2009 01:56:50 +0000</pubDate>
+				<category><![CDATA[Blogging]]></category>
+		<category><![CDATA[RSS]]></category>
+		<category><![CDATA[Ajax]]></category>
+		<category><![CDATA[ObSrv]]></category>
+		<category><![CDATA[Wordpress]]></category>
+		<guid isPermaLink="false">/?p=68</guid>
+
+					<description><![CDATA[Loading&#8230; Loading&#8230; In this article about using slideshows in wordpress I showed you how to embed slideshows in WordPress blog&#8230; ]]></description>
+										<content:encoded><![CDATA[<style type="text/css">
+	.gss6 a img {border : none;} 
+	.gss6 { 
+		width : 300px; 
+		height : 230px; 
+		padding: 10px; 
+		cursor: hand;
+	} 
+</style>
+<style type="text/css">
+	.gss7 a img {border : none;} 
+	.gss7 { 
+		width : 300px; 
+		height : 230px; 
+		padding: 10px; 
+		cursor: hand;
+	} 
+</style>
+<p><script type="text/javascript">
+AddNewShow("http://api.flickr.com/services/feeds/groups_pool.gne?id=26241990@N00&#038;lang=en-us&#038;format=rss_200", "slideshow8");
+AddNewShow("http://blog.NeilEnnis.com/FlickrRSS.php?uri=http://api.flickr.com/services/feeds/groups_pool.gne?id=26241990@N00&#038;lang=en-us&#038;format=rss_200", "slideshow9");
+</script></p>
+<style type="text/css">
+	.alignleft { 
+		float: left; 
+		cursor: hand; 
+		border: none; 
+		margin-right: 15px; 
+		margin-bottom: 10px;
+} 
+</style>
+<div id="body8" class="alignleft">
+<div id="slideshow8" class="gss6">Loading&#8230;</div>
+</div>
+<div id="body9" class="alignleft">
+<div id="slideshow9" class="gss7">Loading&#8230;</div>
+</div>
+<p>In <a href="/index.php/slideshow-from-rss-for-wordpress/">this article about using slideshows in wordpress</a> I showed you how to embed slideshows in WordPress blog posts and sidebars using the Google Ajax Feed API.</p>
+<p>I prefer to use this facility to pull in Image feeds from Flickr.</p>
+<p>The problem with the images in these feeds is that they&#8217;re either too large or too small.</p>
+<p>The MediaRSS specification has a &lt;media:thumbnail&gt; tag which lets you have a thumbnail image in your feed.  That&#8217;s great, but the image size of the thumbnail is 75&#215;75 pixels, which is useless for a nice looking slideshow.  It ends up looking terribly blurry with no detail.</p>
+<p>The Google Ajax Feeds API tries to get around this by letting you specify a &#8220;thumbnailTag&#8221; in the slideshow options object.  Basically, you set this to &#8220;content&#8221; to tell the API to look for the image in the &#8220;content&#8221; section of the feed, rather than the &lt;media:thumnail&gt; section.  This is also great, but the problem is that Flickr uses the LARGE (or even worse, ORIGINAL) image size in this section.  So you get nice large detailed images in the feed, but they&#8217;re so large that they take ages to load, and your slideshow sits there for ages saying &#8220;Loading&#8230;.&#8221; while it grabs the huge images and chews up your audiences bandwidth.</p>
+<p>So I wrote a simple PHP screen scraping utility which grabs the Flickr feed, and changes the ImageUrl&#8230;_L.jpg  to ImageUrl&#8230;.M.jpg &#8211; in other words, it modifies the feed to include the medium size image rather than the large size.</p>
+<p>Medium sized images are fine for slideshows, and they load quite quickly.</p>
+<p>Here&#8217;s the PHP code:</p>
+<p><code><span style="color: #3366ff;">&lt;?php<br />
+date_default_timezone_set('UTC');<br />
+$uri="";<br />
+$first_var = "1";<br />
+foreach($_GET as $variable =&gt; $value)<br />
+{<br />
+if ($variable == 'uri')<br />
+{<br />
+$uri = $uri . $value;<br />
+}<br />
+else<br />
+{<br />
+$uri = $uri . "&amp;" . $variable . "=" . $value;<br />
+}<br />
+}<br />
+header("Content-Type: application/xml; charset=ISO-8859-1");<br />
+$ch = curl_init() or die(curl_error());<br />
+curl_setopt($ch, CURLOPT_URL,$uri);<br />
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);<br />
+$data1=curl_exec($ch) or die(curl_error());<br />
+$data1=str_replace("_s.jpg","_m.jpg",$data1);<br />
+$data1=str_replace('height="75"', "",$data1);<br />
+$data1=str_replace('width="75"', "",$data1);<br />
+echo $data1;<br />
+echo curl_error($ch);<br />
+curl_close($ch);<br />
+?&gt;</span></code></p>
+<p>Just save this in a file named FlickrRSS.php in the top folder of your wordpress directory.  Then instead of using your flickr RSS feed, pass the feed as a query parameter to the PHP utility.</p>
+<p>You&#8217;ll need to change the &amp;lt; and &amp;gt; tags in the file to &lt; and &gt;.</p>
+<p>So if your feed URL was this:<br />
+<a href="http://api.flickr.com/services/feeds/photos_public.gne?id=8575807@N07&amp;lang=en-us&amp;format=rss_200">http://api.flickr.com/services/feeds/photos_public.gne?id=YourFlickrUserNumberlang=en-us&amp;format=rss_200</a></p>
+<p>Use this instead<br />
+<a href="http://YourBlogUrl/FlickrRSS.php?uri">http://YourBlogUrl/FlickrRSS.php?uri</a>=<a href="http://api.flickr.com/services/feeds/photos_public.gne?id=8575807@N07&amp;lang=en-us&amp;format=rss_200">http://api.flickr.com/services/feeds/photos_public.gne?id=YourFlickrUserNumberlang=en-us&amp;format=rss_200</a></p>
+<p>This will change the &lt;media:thumbnail&gt; tag to point to the lager sized image, so your slideshows will load quickly, and look nicer <img src="https://s.w.org/images/core/emoji/17.0.2/72x72/1f642.png" alt="🙂" class="wp-smiley" style="height: 1em; max-height: 1em;" /></p>
+]]></content:encoded>
+					
+					<wfw:commentRss>/slideshow-from-rss-for-wordpress/feed/</wfw:commentRss>
+			<slash:comments>2</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>Welcome to the new TechMusings Blog</title>
+		<link>/welcome-to-the-new-techmusings-blog/</link>
+					<comments>/welcome-to-the-new-techmusings-blog/#respond</comments>
+		
+		<dc:creator><![CDATA[Neil.B.Ennis]]></dc:creator>
+		<pubDate>Sun, 12 Jul 2009 03:05:50 +0000</pubDate>
+				<category><![CDATA[Blogging]]></category>
+		<category><![CDATA[Blogger]]></category>
+		<category><![CDATA[Wordpress]]></category>
+		<guid isPermaLink="false">/?p=66</guid>
+
+					<description><![CDATA[I recently moved this blog from Blogger to WordPress. The old blog was at http://techmusings.blogspot.com I&#8217;m still trying to come&#8230; ]]></description>
+										<content:encoded><![CDATA[<p>I recently moved this blog from Blogger to WordPress.</p>
+<p>The old blog was at <a href="http://techmusings.blogspot.com" target="_blank">http://techmusings.blogspot.com</a></p>
+<p>I&#8217;m still trying to come to grips with WordPress.  Somethings in Blogger were much easier (such as slideshows), but I think WordPress looks much nicer.</p>
+<p>Please let me know what you think, and if you&#8217;ve got some suggestions, I&#8217;d really like to hear them.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>/welcome-to-the-new-techmusings-blog/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+	</channel>
+</rss>

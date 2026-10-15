@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>ObSrv &#8211; Technical Musings</title>
+	<atom:link href="/tag/obsrv/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>The tech blog of Neil Ennis</description>
+	<lastBuildDate>Fri, 22 Jun 2012 00:00:51 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=6.9.10</generator>
+	<item>
+		<title>Slideshow from RSS for WordPress</title>
+		<link>/slideshow-from-rss-for-wordpress/</link>
+					<comments>/slideshow-from-rss-for-wordpress/#comments</comments>
+		
+		<dc:creator><![CDATA[Neil.B.Ennis]]></dc:creator>
+		<pubDate>Mon, 13 Jul 2009 01:56:50 +0000</pubDate>
+				<category><![CDATA[Blogging]]></category>
+		<category><![CDATA[RSS]]></category>
+		<category><![CDATA[Ajax]]></category>
+		<category><![CDATA[ObSrv]]></category>
+		<category><![CDATA[Wordpress]]></category>
+		<guid isPermaLink="false">/?p=68</guid>
+
+					<description><![CDATA[Loading&#8230; Loading&#8230; In this article about using slideshows in wordpress I showed you how to embed slideshows in WordPress blog&#8230; ]]></description>
+										<content:encoded><![CDATA[<style type="text/css">
+	.gss6 a img {border : none;} 
+	.gss6 { 
+		width : 300px; 
+		height : 230px; 
+		padding: 10px; 
+		cursor: hand;
+	} 
+</style>
+<style type="text/css">
+	.gss7 a img {border : none;} 
+	.gss7 { 
+		width : 300px; 
+		height : 230px; 
+		padding: 10px; 
+		cursor: hand;
+	} 
+</style>
+<p><script type="text/javascript">
+AddNewShow("http://api.flickr.com/services/feeds/groups_pool.gne?id=26241990@N00&#038;lang=en-us&#038;format=rss_200", "slideshow8");
+AddNewShow("http://blog.NeilEnnis.com/FlickrRSS.php?uri=http://api.flickr.com/services/feeds/groups_pool.gne?id=26241990@N00&#038;lang=en-us&#038;format=rss_200", "slideshow9");
+</script></p>
+<style type="text/css">
+	.alignleft { 
+		float: left; 
+		cursor: hand; 
+		border: none; 
+		margin-right: 15px; 
+		margin-bottom: 10px;
+} 
+</style>
+<div id="body8" class="alignleft">
+<div id="slideshow8" class="gss6">Loading&#8230;</div>
+</div>
+<div id="body9" class="alignleft">
+<div id="slideshow9" class="gss7">Loading&#8230;</div>
+</div>
+<p>In <a href="/index.php/slideshow-from-rss-for-wordpress/">this article about using slideshows in wordpress</a> I showed you how to embed slideshows in WordPress blog posts and sidebars using the Google Ajax Feed API.</p>
+<p>I prefer to use this facility to pull in Image feeds from Flickr.</p>
+<p>The problem with the images in these feeds is that they&#8217;re either too large or too small.</p>
+<p>The MediaRSS specification has a &lt;media:thumbnail&gt; tag which lets you have a thumbnail image in your feed.  That&#8217;s great, but the image size of the thumbnail is 75&#215;75 pixels, which is useless for a nice looking slideshow.  It ends up looking terribly blurry with no detail.</p>
+<p>The Google Ajax Feeds API tries to get around this by letting you specify a &#8220;thumbnailTag&#8221; in the slideshow options object.  Basically, you set this to &#8220;content&#8221; to tell the API to look for the image in the &#8220;content&#8221; section of the feed, rather than the &lt;media:thumnail&gt; section.  This is also great, but the problem is that Flickr uses the LARGE (or even worse, ORIGINAL) image size in this section.  So you get nice large detailed images in the feed, but they&#8217;re so large that they take ages to load, and your slideshow sits there for ages saying &#8220;Loading&#8230;.&#8221; while it grabs the huge images and chews up your audiences bandwidth.</p>
+<p>So I wrote a simple PHP screen scraping utility which grabs the Flickr feed, and changes the ImageUrl&#8230;_L.jpg  to ImageUrl&#8230;.M.jpg &#8211; in other words, it modifies the feed to include the medium size image rather than the large size.</p>
+<p>Medium sized images are fine for slideshows, and they load quite quickly.</p>
+<p>Here&#8217;s the PHP code:</p>
+<p><code><span style="color: #3366ff;">&lt;?php<br />
+date_default_timezone_set('UTC');<br />
+$uri="";<br />
+$first_var = "1";<br />
+foreach($_GET as $variable =&gt; $value)<br />
+{<br />
+if ($variable == 'uri')<br />
+{<br />
+$uri = $uri . $value;<br />
+}<br />
+else<br />
+{<br />
+$uri = $uri . "&amp;" . $variable . "=" . $value;<br />
+}<br />
+}<br />
+header("Content-Type: application/xml; charset=ISO-8859-1");<br />
+$ch = curl_init() or die(curl_error());<br />
+curl_setopt($ch, CURLOPT_URL,$uri);<br />
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);<br />
+$data1=curl_exec($ch) or die(curl_error());<br />
+$data1=str_replace("_s.jpg","_m.jpg",$data1);<br />
+$data1=str_replace('height="75"', "",$data1);<br />
+$data1=str_replace('width="75"', "",$data1);<br />
+echo $data1;<br />
+echo curl_error($ch);<br />
+curl_close($ch);<br />
+?&gt;</span></code></p>
+<p>Just save this in a file named FlickrRSS.php in the top folder of your wordpress directory.  Then instead of using your flickr RSS feed, pass the feed as a query parameter to the PHP utility.</p>
+<p>You&#8217;ll need to change the &amp;lt; and &amp;gt; tags in the file to &lt; and &gt;.</p>
+<p>So if your feed URL was this:<br />
+<a href="http://api.flickr.com/services/feeds/photos_public.gne?id=8575807@N07&amp;lang=en-us&amp;format=rss_200">http://api.flickr.com/services/feeds/photos_public.gne?id=YourFlickrUserNumberlang=en-us&amp;format=rss_200</a></p>
+<p>Use this instead<br />
+<a href="http://YourBlogUrl/FlickrRSS.php?uri">http://YourBlogUrl/FlickrRSS.php?uri</a>=<a href="http://api.flickr.com/services/feeds/photos_public.gne?id=8575807@N07&amp;lang=en-us&amp;format=rss_200">http://api.flickr.com/services/feeds/photos_public.gne?id=YourFlickrUserNumberlang=en-us&amp;format=rss_200</a></p>
+<p>This will change the &lt;media:thumbnail&gt; tag to point to the lager sized image, so your slideshows will load quickly, and look nicer <img src="https://s.w.org/images/core/emoji/17.0.2/72x72/1f642.png" alt="🙂" class="wp-smiley" style="height: 1em; max-height: 1em;" /></p>
+]]></content:encoded>
+					
+					<wfw:commentRss>/slideshow-from-rss-for-wordpress/feed/</wfw:commentRss>
+			<slash:comments>2</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>Improved image search</title>
+		<link>/obsrv-improved-image-search/</link>
+					<comments>/obsrv-improved-image-search/#comments</comments>
+		
+		<dc:creator><![CDATA[Neil.B.Ennis]]></dc:creator>
+		<pubDate>Wed, 04 Feb 2009 03:45:00 +0000</pubDate>
+				<category><![CDATA[ObSrv]]></category>
+		<guid isPermaLink="false">/?p=30</guid>
+
+					<description><![CDATA[I just fixed a couple of minor bugs which were preventing ObSrv from serving up images based on advanced google&#8230; ]]></description>
+										<content:encoded><![CDATA[<p>I just fixed a couple of minor bugs which were preventing ObSrv from serving up images based on advanced google image searches.</p>
+<p>They should be working ok now.</p>
+<p>If you still have any problems, please let me know or reply to this post.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>/obsrv-improved-image-search/feed/</wfw:commentRss>
+			<slash:comments>2</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>Getting an RSS feed from ANY site with images</title>
+		<link>/obsrv-getting-an-rss-feed-from-any-site-with-images/</link>
+					<comments>/obsrv-getting-an-rss-feed-from-any-site-with-images/#comments</comments>
+		
+		<dc:creator><![CDATA[Neil.B.Ennis]]></dc:creator>
+		<pubDate>Fri, 30 Jan 2009 03:37:00 +0000</pubDate>
+				<category><![CDATA[ObSrv]]></category>
+		<category><![CDATA[RSS]]></category>
+		<guid isPermaLink="false">/?p=29</guid>
+
+					<description><![CDATA[I mentioned earlier that I&#8217;d modify ObSrv to be able to generate an RSS feed from any site that has&#8230; ]]></description>
+										<content:encoded><![CDATA[<p>I mentioned earlier that I&#8217;d modify ObSrv to be able to generate an RSS feed from any site that has images.</p>
+<p>I didn&#8217;t realize it, but it already does this.</p>
+<p>Just key in the search words, followed by site:yourdomain.com</p>
+<p>For example, if you want a feed of all images of the planet Saturn from Nasa.gov, just type in:<br />Saturn site:nasa.gov</p>
+<p>Or for a feed of all images of Antarctica from NationalGeographic.com, type in:<br />Antarctica site:nationalgeographic.com</p>
+<p>How cool is that?</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>/obsrv-getting-an-rss-feed-from-any-site-with-images/feed/</wfw:commentRss>
+			<slash:comments>1</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>Some example image feeds</title>
+		<link>/obsrv-some-example-image-feeds/</link>
+					<comments>/obsrv-some-example-image-feeds/#respond</comments>
+		
+		<dc:creator><![CDATA[Neil.B.Ennis]]></dc:creator>
+		<pubDate>Thu, 29 Jan 2009 00:04:00 +0000</pubDate>
+				<category><![CDATA[ObSrv]]></category>
+		<category><![CDATA[RSS]]></category>
+		<guid isPermaLink="false">/?p=28</guid>
+
+					<description><![CDATA[Here&#8217;s some slideshows built on image feeds from ObSrv. If you&#8217;ve got some you&#8217;d like to show the world, please&#8230; ]]></description>
+										<content:encoded><![CDATA[<p>Here&#8217;s some slideshows built on image feeds from <a href="http://ObSrv.com">ObSrv</a>.  If you&#8217;ve got some you&#8217;d like to show the world, please send an email to mail {at] ObSrv [d0t} com and I&#8217;ll be happy to showcase it here for you.</p>
+<p><object width="400" height="346"><param name="allowFullScreen" value="true" /><param name="movie" value="http://www.vuvox.com/presentations/0e05b3343.swf"/><embed src="http://www.vuvox.com/presentations/0e05b3343.swf" allowFullScreen="true" type="application/x-shockwave-flash" width="400" height="346"></embed></object></p>
+<p><object width="400" height="346"><param name="allowFullScreen" value="true" /><param name="movie" value="http://www.vuvox.com/presentations/0dfeaf4fd.swf"/><embed src="http://www.vuvox.com/presentations/0dfeaf4fd.swf" allowFullScreen="true" type="application/x-shockwave-flash" width="400" height="346"></embed></object></p>
+<p><object width="400" height="346"><param name="allowFullScreen" value="true" /><param name="movie" value="http://www.vuvox.com/presentations/0dfe9a0a5.swf"/><embed src="http://www.vuvox.com/presentations/0dfe9a0a5.swf" allowFullScreen="true" type="application/x-shockwave-flash" width="400" height="346"></embed></object></p>
+]]></content:encoded>
+					
+					<wfw:commentRss>/obsrv-some-example-image-feeds/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>Watching the World</title>
+		<link>/obsrv-watching-the-world/</link>
+					<comments>/obsrv-watching-the-world/#respond</comments>
+		
+		<dc:creator><![CDATA[Neil.B.Ennis]]></dc:creator>
+		<pubDate>Sun, 25 Jan 2009 02:14:00 +0000</pubDate>
+				<category><![CDATA[Blogging]]></category>
+		<category><![CDATA[ObSrv]]></category>
+		<category><![CDATA[RSS]]></category>
+		<guid isPermaLink="false">/?p=27</guid>
+
+					<description><![CDATA[I&#8217;ve just completed a project called &#8220;ObSrv&#8221; which will convert Google Image Searches into MediaRSS compliant RSS feeds. If you&#8230; ]]></description>
+										<content:encoded><![CDATA[<p><a href="http://obsrv.com/"><img decoding="async" style="FLOAT: right; MARGIN: 0px 0px 10px 10px; WIDTH: 333px; CURSOR: hand; HEIGHT: 150px" alt="" src="http://obsrv.com/Images/ObsrvBanner1.jpg" border="0" /></a>I&#8217;ve just completed a project called &#8220;<a href="http://obsrv.com/" target="_blank">ObSrv</a>&#8221; which will convert Google Image Searches into MediaRSS compliant RSS feeds.</p>
+<p>If you don&#8217;t know what an RSS feed is, perhaps you should read <a href="http://en.wikipedia.org/wiki/Rss" target="_blank">this</a>, or <a href="http://rss.softwaregarden.com/aboutrss.html">this</a>. I love RSS because it&#8217;s an easy way to let other people know what you&#8217;re doing, and to find out news that is of specific interest to you. This blog (like almost all others) has an RSS feed. Most news sites and picture sharing sites have RSS too. This makes it easy for you to show their content on your website, or to view their content in an RSS reader.</p>
+<p>If you don&#8217;t know what MediaRSS is, you might want to read <a href="http://search.yahoo.com/mrss" target="_blank">the specification</a>. Basically, it&#8217;s for a special type of RSS feed that contains media, such as pictures, video, and music. These feeds are cool because pictures, videos and music are much more entertaining than plain text. You can do more with them. For example, there&#8217;s a slideshow on the right hand side of this blog that updates every few seconds with pictures of hi-tech gizmos. It&#8217;s based on a Media RSS feed.</p>
+<p>My favourite Media RSS application is <a href="http://www.johnsadventures.com/software/backgroundswitcher/" target="_blank">John&#8217;s Background Switcher</a>. It updates the wallpaper on your computer desktop with pictures from a Media RSS feed.</p>
+<p>My only problem with Media RSS is that the biggest source of images on the web (<a href="http://images.google.com/" target="_blank">Google Images</a>) doesn&#8217;t serve up their image searches as an RSS feed. Which means that while you can search for images at google, you can&#8217;t automatically feed them into a media RSS application.</p>
+<p>That&#8217;s where ObSrv comes in. It converts a Google Image search into a Media RSS feed.</p>
+<p>Here&#8217;s how:</p>
+<ol>
+<li>Go to <a href="http://obsrv.com/" target="_blank">http://obsrv.com/</a> </li>
+<p></p>
+<li>Type a few search words in the box. (Hint. If you want, do an advanced search in Google Images, and copy the Google Images URL into the box instead).<br /><img decoding="async" id="BLOGGER_PHOTO_ID_5295054184119835938" style="WIDTH: 320px; HEIGHT: 199px" alt="" src="http://3.bp.blogspot.com/_N2feXO3-_yM/SXvPud7onSI/AAAAAAAAAT0/lGhyk8LFAOE/s320/ObSrvScreenDump.jpg" border="0" /></li>
+<li>Press ENTER or click on the &#8220;GO&#8221; button.</li>
+<p></p>
+<li>ObSrv will give you the link to your feed.<br /><img decoding="async" id="BLOGGER_PHOTO_ID_5295055168790469026" style="WIDTH: 320px; HEIGHT: 46px" alt="" src="http://3.bp.blogspot.com/_N2feXO3-_yM/SXvQnyHaGaI/AAAAAAAAAT8/PU5qrLmD4Nk/s320/ObSrvScreenDump2.jpg" border="0" /></li>
+<p></p>
+<li>Click on the link to open the feed in a new window, or copy the URL for the feed from the textbox.</li>
+</ol>
+<p>Here&#8217;s some links to some applications that you can use with RSS Image Feeds:</p>
+<p><a href="http://www.johnsadventures.com/software/backgroundswitcher/" target="_blank">John&#8217;s Background Switcher</a> (Windows desktop background switcher)</p>
+<p><a href="http://www.vuvox.com/express">Vuvox</a> (Slideshows)</p>
+<p><a href="http://www.feedreader.com/">Feed Reader</a> </p>
+<p><a href="http://www.paradisoft.com/rsspopper/rsspopper.asp">RSS Popper</a></p>
+<p><strong>What&#8217;s Next?</strong></p>
+<p>I&#8217;ll be adding functionality to ObSrv as time permits. My next task is to get it to convert any webpage containing images into an RSS Image Feed.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>/obsrv-watching-the-world/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+	</channel>
+</rss>

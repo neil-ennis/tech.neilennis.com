@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	
+	>
+<channel>
+	<title>
+	Comments on: Home Assistant Automations	</title>
+	<atom:link href="/home-assistant-automations/feed/" rel="self" type="application/rss+xml" />
+	<link>/home-assistant-automations/</link>
+	<description>The tech blog of Neil Ennis</description>
+	<lastBuildDate>Tue, 26 Aug 2025 03:50:42 +0000</lastBuildDate>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=6.9.10</generator>
+	<item>
+		<title>
+		By: hauser		</title>
+		<link>/home-assistant-automations/comment-page-1/#comment-2443</link>
+
+		<dc:creator><![CDATA[hauser]]></dc:creator>
+		<pubDate>Tue, 26 Aug 2025 03:50:42 +0000</pubDate>
+		<guid isPermaLink="false">/?p=559#comment-2443</guid>
+
+					<description><![CDATA[All good...thanks Neil for your response. It is still very helpul. I work in tech too, but well past my coding days. I just like playing round with tech and could&#039;nt agree with you more - these experiments can come back and hurt your back pocket :-) if you are not careful...
+
+I was using Netzero as well but mainly for simple automations to allow Grid Charging of my PW2&#039;s on a set schedule (Free 3hr electricity plans). I was aware they had Amber integration but I did&#039;nt use it to it&#039;s full potential esp after they went to a paid model. I have the Amber integration setup in HA so in theory I have access to the live prices &#038;  should be able to replicate what was possible in Netzero. I&#039;m in Melbourne and thought this is right season to experiment as our household consumption is low during spring before peaking in Summer.  The 3rd PW2 was just added last week, so in a way I want to use its capacity exclusively for grid exports to maximise my earnings/ROI and retain the other 2 for self consumption during Spikes/Peak Periods. 
+
+It&#039;s a bummer I need to turn off Smartshift entirely as I can&#039;t seem to figure out how to setup curtailment without it as I no longer have API access to my inverters (I think it expired after 2 years). I might have to find other ways of doing this...]]></description>
+			<content:encoded><![CDATA[<p>All good&#8230;thanks Neil for your response. It is still very helpul. I work in tech too, but well past my coding days. I just like playing round with tech and could&#8217;nt agree with you more &#8211; these experiments can come back and hurt your back pocket 🙂 if you are not careful&#8230;</p>
+<p>I was using Netzero as well but mainly for simple automations to allow Grid Charging of my PW2&#8217;s on a set schedule (Free 3hr electricity plans). I was aware they had Amber integration but I did&#8217;nt use it to it&#8217;s full potential esp after they went to a paid model. I have the Amber integration setup in HA so in theory I have access to the live prices &amp;  should be able to replicate what was possible in Netzero. I&#8217;m in Melbourne and thought this is right season to experiment as our household consumption is low during spring before peaking in Summer.  The 3rd PW2 was just added last week, so in a way I want to use its capacity exclusively for grid exports to maximise my earnings/ROI and retain the other 2 for self consumption during Spikes/Peak Periods. </p>
+<p>It&#8217;s a bummer I need to turn off Smartshift entirely as I can&#8217;t seem to figure out how to setup curtailment without it as I no longer have API access to my inverters (I think it expired after 2 years). I might have to find other ways of doing this&#8230;</p>
+]]></content:encoded>
+		
+			</item>
+		<item>
+		<title>
+		By: Neil.B.Ennis		</title>
+		<link>/home-assistant-automations/comment-page-1/#comment-2442</link>
+
+		<dc:creator><![CDATA[Neil.B.Ennis]]></dc:creator>
+		<pubDate>Mon, 25 Aug 2025 23:51:44 +0000</pubDate>
+		<guid isPermaLink="false">/?p=559#comment-2442</guid>
+
+					<description><![CDATA[In reply to &lt;a href=&quot;/home-assistant-automations/comment-page-1/#comment-2441&quot;&gt;hauser&lt;/a&gt;.
+
+Hi
+
+Thanks for reading my article. 
+
+Congratulations on having such an impressive setup.
+
+The automations do what they are designed to do, but the downside was that the system required daily attention in order to work out what my &quot;buy&quot; and &quot;sell&quot; positions were for the day.  If I forgot to do this, it was easy to end up paying too much or having an empty battery.
+
+In answer to your question, you need to disable Smartshift if you enable HA Automations.  Otherwise the two things compete with each other, and you have no certainty about what will happen.
+
+I toyed with the NetZero app for a while, and found it useful because it was able to upload the actual Amber prices into the Tesla Utility Rate plan.  That&#039;s really handy.  My utility rate plan used to be manually set, which would make it impossible to dispatch to the grid outside of the times I had earmarked in my artificial prices.  That app used to be free, but I think you have to pay for it now.  Incidentally, NetZero played nicely with Smartshift, so it was possible to have both services enabled simultaneously.
+
+With regards to curtailment, we don&#039;t have that either, but I work around that by having a programmable switch on the hot water system.  If the FIT ever goes negative, I make sure the hot water switch is on.  If the FIT goes really negative, I manually intervene and take the house off-grid.  It&#039;s not ideal, but I don&#039;t know of an easier solution.
+
+
+I wrote some code to work out optimal buy and sell prices, but on cloudy days I ended up with buy prices higher than sell prices, which says to me that I got it wrong :)
+
+I&#039;m an I.T. professional by trade, and this is the first time in my life that errors in my code have an immediate and tangible cost to my hip pocket, which is quite alarming.
+
+In the end, I disabled the automations and let Amber Smartshift do its thing.  I decided their logic was better than mine, and I didn&#039;t want to have to worry about it every day.
+
+So far it has been good.  Our electricity bill has been in credit for the last 9 months, and the only days where we end up with mediocre results are on cold cloudy winter days - which are rare in Brisbane.
+
+Sorry I couldn&#039;t be more help.  I&#039;m not sure if I&#039;ve answered all your questions - if not, please let me know and I&#039;ll do what I can to help.]]></description>
+			<content:encoded><![CDATA[<p>In reply to <a href="/home-assistant-automations/comment-page-1/#comment-2441">hauser</a>.</p>
+<p>Hi</p>
+<p>Thanks for reading my article. </p>
+<p>Congratulations on having such an impressive setup.</p>
+<p>The automations do what they are designed to do, but the downside was that the system required daily attention in order to work out what my &#8220;buy&#8221; and &#8220;sell&#8221; positions were for the day.  If I forgot to do this, it was easy to end up paying too much or having an empty battery.</p>
+<p>In answer to your question, you need to disable Smartshift if you enable HA Automations.  Otherwise the two things compete with each other, and you have no certainty about what will happen.</p>
+<p>I toyed with the NetZero app for a while, and found it useful because it was able to upload the actual Amber prices into the Tesla Utility Rate plan.  That&#8217;s really handy.  My utility rate plan used to be manually set, which would make it impossible to dispatch to the grid outside of the times I had earmarked in my artificial prices.  That app used to be free, but I think you have to pay for it now.  Incidentally, NetZero played nicely with Smartshift, so it was possible to have both services enabled simultaneously.</p>
+<p>With regards to curtailment, we don&#8217;t have that either, but I work around that by having a programmable switch on the hot water system.  If the FIT ever goes negative, I make sure the hot water switch is on.  If the FIT goes really negative, I manually intervene and take the house off-grid.  It&#8217;s not ideal, but I don&#8217;t know of an easier solution.</p>
+<p>I wrote some code to work out optimal buy and sell prices, but on cloudy days I ended up with buy prices higher than sell prices, which says to me that I got it wrong 🙂</p>
+<p>I&#8217;m an I.T. professional by trade, and this is the first time in my life that errors in my code have an immediate and tangible cost to my hip pocket, which is quite alarming.</p>
+<p>In the end, I disabled the automations and let Amber Smartshift do its thing.  I decided their logic was better than mine, and I didn&#8217;t want to have to worry about it every day.</p>
+<p>So far it has been good.  Our electricity bill has been in credit for the last 9 months, and the only days where we end up with mediocre results are on cold cloudy winter days &#8211; which are rare in Brisbane.</p>
+<p>Sorry I couldn&#8217;t be more help.  I&#8217;m not sure if I&#8217;ve answered all your questions &#8211; if not, please let me know and I&#8217;ll do what I can to help.</p>
+]]></content:encoded>
+		
+			</item>
+		<item>
+		<title>
+		By: hauser		</title>
+		<link>/home-assistant-automations/comment-page-1/#comment-2441</link>
+
+		<dc:creator><![CDATA[hauser]]></dc:creator>
+		<pubDate>Mon, 25 Aug 2025 23:29:31 +0000</pubDate>
+		<guid isPermaLink="false">/?p=559#comment-2441</guid>
+
+					<description><![CDATA[Hi, thanks for publishing this. This is probably the most detailed post I have seen by someone automating beyond what Amber Smartshift offers. I have 3xPW2&#039;s, 3xSolarEdge Inverters for ~17 kw Solar  &#038; a Tesla EV as well and have recently re-joined Amber.
+
+I was curious to hear if you have been able to observe the results/track better ROI through this? Does having these automations in any way interfere with Amber&#039;s Smartshift? I.e can they co-exist together or do you have to disable it entirely? I was specifically interested in using their Solar Export Curtailment feature (esp in Summer)  as I no longer have the ability to do this myself on the SolarEdge inverters as they don&#039;t offer a free/local API. 
+
+I&#039;m planning to develop a similar automation as well, but use additional logic to also &#039;smart charge&#039; my EV when Feed-In Tariff is low/negative. Also, given my large PW2 capacity and limited peak household consumption, I want to take advantage of price spikes and force feed back a specific amount (eg 13.5 kwh) into grid. Looks like the ony way to manually force feed PW2 back to the grid is by setting up the tariff&#039;s in the Tesla app?]]></description>
+			<content:encoded><![CDATA[<p>Hi, thanks for publishing this. This is probably the most detailed post I have seen by someone automating beyond what Amber Smartshift offers. I have 3xPW2&#8217;s, 3xSolarEdge Inverters for ~17 kw Solar  &amp; a Tesla EV as well and have recently re-joined Amber.</p>
+<p>I was curious to hear if you have been able to observe the results/track better ROI through this? Does having these automations in any way interfere with Amber&#8217;s Smartshift? I.e can they co-exist together or do you have to disable it entirely? I was specifically interested in using their Solar Export Curtailment feature (esp in Summer)  as I no longer have the ability to do this myself on the SolarEdge inverters as they don&#8217;t offer a free/local API. </p>
+<p>I&#8217;m planning to develop a similar automation as well, but use additional logic to also &#8216;smart charge&#8217; my EV when Feed-In Tariff is low/negative. Also, given my large PW2 capacity and limited peak household consumption, I want to take advantage of price spikes and force feed back a specific amount (eg 13.5 kwh) into grid. Looks like the ony way to manually force feed PW2 back to the grid is by setting up the tariff&#8217;s in the Tesla app?</p>
+]]></content:encoded>
+		
+			</item>
+	</channel>
+</rss>

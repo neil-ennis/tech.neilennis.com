@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>MS-Access &#8211; Technical Musings</title>
+	<atom:link href="/tag/ms-access/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>The tech blog of Neil Ennis</description>
+	<lastBuildDate>Mon, 13 Jul 2009 23:09:03 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=6.9.10</generator>
+	<item>
+		<title>What&#8217;s in a #Name?</title>
+		<link>/whats-in-a-name/</link>
+					<comments>/whats-in-a-name/#respond</comments>
+		
+		<dc:creator><![CDATA[Neil.B.Ennis]]></dc:creator>
+		<pubDate>Sat, 19 Feb 2005 08:31:00 +0000</pubDate>
+				<category><![CDATA[Software]]></category>
+		<category><![CDATA[MS-Access]]></category>
+		<guid isPermaLink="false">/?p=7</guid>
+
+					<description><![CDATA[Sometimes I&#8217;ve seen #Name? on MS-Access reports. When it appears, the report is impossible to export to excel. Rather than&#8230; ]]></description>
+										<content:encoded><![CDATA[<p>Sometimes I&#8217;ve seen #Name? on MS-Access reports.</p>
+<p>When it appears, the report is impossible to export to excel.</p>
+<p>Rather than pull your hair out, check to see if the correct ADO reference is loaded in Tools / References.  Usually the problem shows up as a missing reference.  Fix the reference and the problem goes away.</p>
+<p>The REAL challenge is when you&#8217;re deploying and MDE or ADE, because the end user can&#8217;t change tools / references.</p>
+<p>In this case, you should make sure that the DLL MSADO15.DLL is registered.  On my machine it lives in &#8220;C:\program Files\common Files\System\ado&#8221;.</p>
+<p>The command to register this file manually is:<br />regsvr32 &#8220;C:\program Files\common Files\System\ado\msado15.dll&#8221;</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>/whats-in-a-name/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+	</channel>
+</rss>
