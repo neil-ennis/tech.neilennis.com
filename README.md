@@ -1,11 +1,11 @@
 # tech.neilennis.com
 
-This repository holds the public static snapshot of [Technical Musings](https://tech.neilennis.com/). The editable source is a separate, private local WordPress installation. Staatic generates the reviewed snapshot in `site/`; Cloudflare Workers Static Assets serves it.
+This repository holds the public static snapshot of [Technical Musings](https://tech.neilennis.com/). The editable source is a separate, private local WordPress installation. Staatic generates the reviewed snapshot in `site/`; Cloudflare Workers Static Assets serves it on the live domain and the `workers.dev` preview.
 
 ## Layout
 
 - `site/` contains the public website.
-- `wrangler.jsonc` configures Cloudflare Workers Static Assets.
+- `wrangler.jsonc` configures Cloudflare Workers Static Assets and the live custom domain.
 - `site/postmap.json` and `site/p/index.html` preserve numeric post shortlinks; `site/_redirects` routes `/p/<id>` to the resolver.
 - The separate `nbe.me` redirector sends `/t/<id>` to `https://tech.neilennis.com/p/<id>`. Keep the `/p/` resolver and every existing `postmap.json` entry when refreshing the export.
 - `site/404.html` provides the static not-found page.
