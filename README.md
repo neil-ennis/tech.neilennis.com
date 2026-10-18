@@ -10,6 +10,7 @@ This repository holds the public static snapshot of [Technical Musings](https://
 - The separate `nbe.me` redirector sends `/t/<id>` to `https://tech.neilennis.com/p/<id>`. Keep the `/p/` resolver and every existing `postmap.json` entry when refreshing the export.
 - `site/404.html` provides the static not-found page.
 - `scripts/prepare_export.py` repairs Staatic's local font URLs, copies the referenced local fonts and sidebar portrait, maps redirected page IDs to their actual destinations, and omits unneeded GeoIP and REST API inventory files.
+- `scripts/repair_missing_images.py` restores four lost post images from `assets/recovered/` and removes one unavailable decorative Office graphic from each new export. Image sources and reuse notes are recorded in `assets/recovered/SOURCES.md`.
 
 ## Updating the site
 

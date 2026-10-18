@@ -10,6 +10,8 @@ import re
 import shutil
 import sys
 
+from repair_missing_images import repair_missing_images
+
 site = Path(sys.argv[1]).resolve()
 wordpress = Path(sys.argv[2]).resolve()
 if not (site / "index.html").is_file() or not (wordpress / "wp-content").is_dir():
@@ -149,7 +151,9 @@ if legacy_query_redirect not in home_html:
         raise SystemExit("Home page has no head element for legacy query redirects")
     home.write_text(home_html.replace("<head>", "<head>" + legacy_query_redirect, 1), encoding="utf-8")
 
+repaired_image_pages = repair_missing_images(site)
+
 print(
     f"Prepared {html_files_changed} HTML files; corrected {css_files_changed} CSS files; "
-    f"copied {font_files_copied} fonts and the referenced portrait."
+    f"copied {font_files_copied} fonts and the referenced portrait; repaired images in {repaired_image_pages} HTML files."
 )
